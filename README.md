@@ -37,7 +37,21 @@ It features full **authentication and authorization**, **property management**, 
 
 ---
 
-## 2. Tech Stack
+## 2. Screenshots
+![Home Page](./public/images/Home.png)
+![Listing Page](./public/images/Listing.png)
+![create](./public/images/Create.png)
+<!-- ![Show Page](./public/images/show.png) -->
+![Edit](./public/images/EditPage.png)
+![Reviews](./public/images/Reviews.png)
+![map](./public/images/map.png)
+![signup](./public/images/Register.png)
+![login](./public/images/LoginPage.png)
+<!-- ![delete](./public/images/delete.png) -->
+
+---
+
+## 3. Tech Stack
 
 | Category | Technology |
 |-----------|-------------|
@@ -51,7 +65,7 @@ It features full **authentication and authorization**, **property management**, 
 
 ---
 
-## 3. Installation and Setup
+## 4. Installation and Setup
 
 ### Prerequisites
 - Node.js (v16+)
@@ -73,3 +87,22 @@ It features full **authentication and authorization**, **property management**, 
    ```bash
    npx nodemon app.js
 
+---
+
+## 5. Configure Environment Variables:
+   Create a `.env` file in the root directory. You will need to add your specific keys for the database, session, Cloudinary, and MapTiler. A typical `.env` might look like this:
+   ```env
+   # Database
+   MONGO_URL=your_mongodb_connection_string
+
+   # Session Secret
+   SECRET=your_secret_key
+
+   # Cloudinary Setup
+   CLOUD_NAME=your_cloud_name
+   CLOUD_API_KEY=your_api_key
+   CLOUD_API_SECRET=your_api_secret
+
+   # MapTiler Setup
+   MAP_TOKEN=your_maptiler_token
+   ```
