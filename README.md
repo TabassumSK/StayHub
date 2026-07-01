@@ -1,6 +1,6 @@
-# Wonderlust
+# StayHub
 
-**Wonderlust** is a full-stack web application inspired by **Airbnb**, allowing property owners to list and manage their properties while users can explore, book, and review them.  
+**Stayhub** is a full-stack web application inspired by **Airbnb**, allowing property owners to list and manage their properties while users can explore, book, and review them.  
 It features full **authentication and authorization**, **property management**, **booking system**, and **review functionality** all within a modern, responsive UI.
 
 ---
