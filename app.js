@@ -57,6 +57,9 @@ app.set("view engine", "ejs");
 // Example: /public/style.css → accessible at http://localhost:3000/style.css
 app.use(express.static(path.join(__dirname, "/public")));
 
+// Serve static files from the root directory (for favicon)
+app.use(express.static(path.join(__dirname)));
+
 // Tell Express where your "views" (EJS templates) are located
 // __dirname = current project folder
 app.set("views", path.join(__dirname, "views"));
@@ -172,7 +175,6 @@ app.use((req, res, next) => {
   res.locals.currUser = req.user;
   next();
 });
-
 
 //user login
 // app.get("/users", async (req, res) => {

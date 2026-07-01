@@ -53,7 +53,7 @@
           <div class="invalid-feedback">Price should be valid</div>
         </div>
 
-        <div class="mb-3 col-md-8">
+      <div class="mb-3 col-md-8">
           <label for="country" class="form-label">Country</label>
           <input
             name="listing[country]"
@@ -65,6 +65,18 @@
           <div class="invalid-feedback">Country should be valid</div>
         </div>
       </div>
+
+      <div class="mb-3">
+        <label for="services" class="form-label">Services (what this place provides)</label>
+        <input
+          name="listing[services]"
+          value="<%=listing.services%>"
+          type="text"
+          class="form-control"
+        />
+      </div>
+
+
 
       <div class="mb-3">
         <label for="location" class="form-label">Location</label>

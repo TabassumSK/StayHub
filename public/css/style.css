@@ -5,27 +5,40 @@ body {
   min-height: 100vh;
 }
 
+.kaushan-script-regular {
+  font-family: "Kaushan Script", cursive;
+  font-weight: 800;
+  font-size: 1.4rem;
+  font-style: normal;
+}
+
 .navbar {
   height: 4rem;
   background-color: white;
+  margin: 0 1rem;
 }
 
-.fa-solid {
-  color: #00b2ff;
+.navbar-brand {
+  margin: 0;
+  color: #0D6EFD;
+}
+
+.fa-solid, .fa-brands {
   font-size: 2rem;
 }
 
 .nav-link {
-  color: #222222 !important;
-  margin: 0 10px;
+  color: #0D6EFD !important;
+  margin-bottom: 4px;
 }
 
 .container {
   flex: 1;
+  max-width: 95%;
 }
 
 .fa-compass {
-  color: #00b2ff;
+  color: #0D6EFD;
   font-size: 2rem;
 }
 
@@ -68,6 +81,11 @@ body {
 .listing-card {
   border: none !important;
   margin-bottom: 2rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.listing-card:hover {
+  transform: scale(1.02);
 }
 
 .card-img-top {
@@ -77,11 +95,7 @@ body {
 }
 
 .card-body {
-  padding: 0 !important;
-}
-
-.card-text {
-  font-weight: 400 !important;
+  padding: 0.8rem;
 }
 
 .listing-link {
@@ -89,24 +103,30 @@ body {
   text-decoration: none;
 }
 
-.card-img-overlay {
-  opacity: 0;
+.card-img-overlay .fa-heart {
+  opacity: 0.4;
 }
 
 .card-img-overlay:hover {
-  opacity: 0.2;
-  background-color: white;
+  .fa-heart{
+    color: rgb(190, 93, 93);
+  }
+}
+
+.fa-heart.red {
+  color: rgb(240 85 85) !important;
+  opacity: 1 !important;
 }
 
 /* New page */
 .add-btn {
-  background-color: #00b2ff !important;
+  background-color: #0D6EFD !important;
   border: none !important;
 }
 
 /* edit page */
 .edit-btn {
-  background-color: #00b2ff !important;
+  background-color: #0D6EFD !important;
   border: none !important;
 }
 
@@ -143,9 +163,10 @@ body {
 
 .filter {
   text-align: center;
-  margin-left: 1rem;
+  margin: 1rem 1.2rem 0 1rem;
+  /* margin-left: 1rem;
   margin-right: 1rem;
-  margin-top: 1rem;
+  margin-top: 1rem; */
   opacity: 0.7;
 }
 
@@ -167,7 +188,7 @@ body {
   border-radius: 1rem;
   height: 3rem;
   padding: 1rem;
-  margin-left: 5rem;
+  margin-left: 0.5rem;
   display: flex;
   align-items: center;
 }
@@ -178,14 +199,14 @@ body {
 
 /* navbar search */
 .search-btn {
-  background-color: #00b2ff;
+  background-color: #0D6EFD;
   color: #fff;
-  border-radius: 25px;
+  border-radius: 2rem;
   padding: 0 1rem 0 1rem;
 }
 
 .search-btn:hover {
-  background-color: #00b2ff;
+  background-color: #0D6EFD;
   color: #fff;
 }
 
@@ -197,7 +218,8 @@ body {
 }
 
 .search-ipt {
-  border-radius: 25px;
-  padding: 0.5rem 3rem 0.5rem 3rem;
-  font-size: 1rem;
+  margin-left: 1.25rem;
+    border-radius: 2rem;
+    font-size: 0.9rem;
+    width: 14.5rem;
 }

@@ -1,32 +1,95 @@
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+<style>
+  .profile-menu {
+    border: 1px solid #ddd;
+    padding: 6px 12px;
+    border-radius: 30px;
+    transition: 0.3s ease;
+  }
+
+  .profile-menu:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .dropdown-item {
+    padding: 10px 20px;
+    font-weight: 500;
+  }
+
+  li::marker {
+    content: "";
+  }
+
+  .profile-menu i:first-child {
+    font-size: 26px;
+    color: #444;
+  }
+
+  .profile-menu i:last-child {
+    font-size: 14px;
+    color: #666;
+    margin-left: 2px;
+  }
+
+  .profile-dropdown {
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 8px 0;
+  }
+
+  .dropdown-icon {
+    width: 18px;
+    text-align: center;
+    font-size: 16px;
+    color: #555;
+    transition: 0.3s;
+  }
+
+  .dropdown-item:hover .dropdown-icon {
+    color: #667eea;
+  }
+
+  .host-btn {
+    text-decoration: none;
+    background-color: #eff2ff;
+    border-radius: 1rem;
+    padding: 0.3rem 1rem;
+  }
+
+  .hosting {
+    margin-right: 12px;
+    margin-top: 3px;
+  }
+
+  .collapse {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .profile-nav {
+    display: flex;
+  }
+</style>
+
+
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top p-3">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/"
-      ><i class="fa-solid fa-plane-departure"></i
-    ></a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNavAltMarkup"
-      aria-controls="navbarNavAltMarkup"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+    <a class="navbar-brand" href="/"><i class="fa-brands fa-avianex"></i></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link" href="/listings">Explore</a>
+        <a class="nav-link kaushan-script-regular" href="/listings">StayHub</a>
       </div>
 
-      <div class="navbar-nav ms-auto">
+      <div class="navbar-nav">
         <form class="d-flex">
           <input class="form-control me-2 search-ipt" type="search" placeholder="Search destination">
           <button class="btn search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
         </form>
       </div>
 
-      <div class="navbar-nav ms-auto">
+      <!-- <div class="navbar-nav ms-auto">
         <a class="nav-link" href="/listings/new">Airbnb your home</a>
         <% if(!currUser) { %>
         <a class="nav-link" href="/signup">SignUp</a>
@@ -36,6 +99,72 @@
         <% if(currUser) { %>
         <a class="nav-link" href="/logout">LogOut</a>
         <% } %>
+      </div> -->
+
+      <div class="profile-nav">
+        <div class="hosting">
+          <a class="nav-link host-btn" href="/listings/new">Become a host</a>
+        </div>
+
+        <li class="nav-item dropdown">
+          <% if(!currUser) { %>
+          <a class="nav-link d-flex align-items-center profile-menu" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-solid fa-user-circle fs-4"></i>
+            <i class="fa-solid fa-caret-down"></i>
+          </a>
+          <% } else { %>
+          <a class="nav-link d-flex align-items-center profile-menu" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="fa-solid fa-user-circle fs-5 me-2"></i>
+            <%= currUser.username %>
+            <i class="fa-solid fa-caret-down ms-1"></i>
+          </a>
+          <% } %>
+
+          <ul class="dropdown-menu dropdown-menu-end profile-dropdown">
+            <% if(!currUser) { %>
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/signup">
+                <i class="fa-solid fa-user-plus me-2 dropdown-icon"></i>
+                Sign Up
+              </a>
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/login">
+                <i class="fa-solid fa-user-check me-2 dropdown-icon"></i>
+                Login
+              </a>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <% } else { %>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/logout">
+                <i class="fa-solid fa-right-from-bracket me-2 dropdown-icon"></i>
+                Logout
+              </a>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <% } %>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="/listings/new">
+                <i class="fa-solid fa-house-chimney me-2 dropdown-icon"></i>
+                Become a host
+              </a>
+            </li>
+
+          </ul>
+
+        </li>
       </div>
     </div>
   </div>

@@ -1,5 +1,5 @@
 <% layout('/layouts/boilerplate') -%>
-<%= success %>
+<!-- <%= success %> -->
 
 <div id="filters">
   <div class="filter">
@@ -46,6 +46,18 @@
     <div><i class="fa-solid fa-ship"></i></div>
     <p>Boats</p>
   </div>
+  <div class="filter">
+    <div><i class="fa-solid fa-building"></i></div>
+    <p>Apartment</p>
+  </div>
+  <div class="filter">
+    <div><i class="fa-solid fa-tents"></i></div>
+    <p>Campsite</p>
+  </div>
+  <div class="filter">
+    <div><i class="fa-solid fa-umbrella-beach"></i></div>
+    <p>Beach</p>
+  </div>
   
   <div class="tax-toggle">
     <div class="form-check-reverse form-switch">
@@ -56,12 +68,12 @@
 </div>
 
 
-<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 row-col-sm-1 mt-3">
+<div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1 mt-2">
   <% for(let listing of allListings) { %>
   <a href="/listings/<%= listing._id %>" class="listing-link">
     <div class="card col listing-card">
       <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 20rem;">
-      <div class="card-img-overlay"><i class="fa-solid fa-heart"></i></div>
+      <div class="card-img-overlay"><i class="fa-solid fa-heart heart-icon"></i></div>
       <div class="card-body">
         <p class="card-text">
           <b><%= listing.title %></b> <br />
@@ -73,18 +85,3 @@
   </a>
   <% } %>
 </div>
-
-<script>
-  let taxSwitch = document.getElementById("flexSwitchCheckDefault");
-  taxSwitch.addEventListener("click", () => {
-    let taxInfo = document.getElementsByClassName("tax-info");
-    for(info of taxInfo) {
-      if(info.style.display != "inline") {
-        info.style.display = "inline";
-      }
-      else {
-        info.style.display = "none";
-      }
-    }
-  });
-</script>
