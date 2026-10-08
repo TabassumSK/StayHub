@@ -1,172 +1,88 @@
-<style>
-  .profile-menu {
-    border: 1px solid #d5dfdd;
-    padding: 6px 12px;
-    border-radius: 30px;
-    transition: 0.3s ease;
-  }
+<nav class="navbar navbar-expand-lg stayhub-navbar sticky-top">
+  <div class="container-fluid stayhub-navbar-inner">
+    <a class="navbar-brand stayhub-brand" href="/listings" aria-label="StayHub home">
+      <span class="stayhub-brand-mark"><i class="fa-solid fa-compass" aria-hidden="true"></i></span>
+      <span class="stayhub-brand-name">StayHub</span>
+    </a>
 
-  .profile-menu:hover {
-    border-color: #0d6e6e;
-    box-shadow: 0 4px 15px rgb(13 110 110 / 12%);
-  }
-
-  .dropdown-item {
-    padding: 10px 20px;
-    font-weight: 500;
-  }
-
-  .profile-dropdown li::marker {
-    content: "";
-  }
-
-  .profile-menu i:first-child {
-    font-size: 26px;
-    color: #0d6e6e;
-  }
-
-  .profile-menu i:last-child {
-    font-size: 14px;
-    color: #687681;
-    margin-left: 2px;
-  }
-
-  .profile-dropdown {
-    border: 1px solid #d5dfdd;
-    border-radius: 0.8rem;
-    box-shadow: 0 10px 28px rgb(31 41 51 / 12%);
-    padding: 8px 0;
-  }
-
-  .dropdown-icon {
-    width: 18px;
-    text-align: center;
-    font-size: 16px;
-    color: #0d6e6e;
-    transition: 0.3s;
-  }
-
-  .dropdown-item:hover .dropdown-icon {
-    color: #095757;
-  }
-
-  .host-btn {
-    text-decoration: none;
-    background-color: #e8f2ef;
-    border-radius: 1rem;
-    padding: 0.3rem 1rem;
-  }
-
-  .hosting {
-    margin-right: 12px;
-    margin-top: 3px;
-  }
-
-  #navbarNavAltMarkup {
-    justify-content: space-between;
-  }
-
-  .profile-nav {
-    display: flex;
-    align-items: center;
-  }
-</style>
-
-
-<nav class="navbar navbar-expand-lg bg-body-light border-bottom sticky-top p-3">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/listings" aria-label="StayHub home"><i class="fa-brands fa-avianex"></i></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link kaushan-script-regular" href="/listings">StayHub</a>
-      </div>
 
-      <div class="navbar-nav">
-        <form class="d-flex" action="/listings" method="get">
-          <input class="form-control me-2 search-ipt" type="search" placeholder="Search destination">
-          <button class="btn search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
-        </form>
-      </div>
+    <div class="collapse navbar-collapse stayhub-navbar-content" id="navbarNavAltMarkup">
+      <form class="stayhub-search" action="/listings" method="get" role="search">
+        <label class="visually-hidden" for="stayhub-search-input">Search stays</label>
+        <i class="fa-solid fa-magnifying-glass stayhub-search-icon" aria-hidden="true"></i>
+        <input
+          id="stayhub-search-input"
+          class="form-control stayhub-search-input"
+          type="search"
+          name="q"
+          value="<%= typeof q !== 'undefined' ? q : '' %>"
+          placeholder="Search destinations or stays"
+          autocomplete="off">
+        <button class="btn stayhub-search-button" type="submit">Search</button>
+      </form>
 
-      <!-- <div class="navbar-nav ms-auto">
-        <a class="nav-link" href="/listings/new">Airbnb your home</a>
-        <% if(!currUser) { %>
-        <a class="nav-link" href="/signup">SignUp</a>
-        <a class="nav-link" href="/login">LogIn</a>
-        <% } %>
+      <div class="stayhub-nav-actions">
+        <a class="stayhub-host-link" href="/listings/new">
+          <i class="fa-solid fa-house-chimney" aria-hidden="true"></i>
+          <span>Become a host</span>
+        </a>
 
-        <% if(currUser) { %>
-        <a class="nav-link" href="/logout">LogOut</a>
-        <% } %>
-      </div> -->
-
-      <div class="profile-nav">
-        <div class="hosting">
-          <a class="nav-link host-btn" href="/listings/new">Become a host</a>
-        </div>
-
-        <div class="nav-item dropdown">
-          <% if(!currUser) { %>
-          <a class="nav-link d-flex align-items-center profile-menu" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fa-solid fa-user-circle fs-4"></i>
-            <i class="fa-solid fa-caret-down"></i>
-          </a>
-          <% } else { %>
-          <a class="nav-link d-flex align-items-center profile-menu" href="#" role="button" data-bs-toggle="dropdown">
-            <i class="fa-solid fa-user-circle fs-5 me-2"></i>
-            <%= currUser.username %>
-            <i class="fa-solid fa-caret-down ms-1"></i>
-          </a>
-          <% } %>
-
-          <ul class="dropdown-menu dropdown-menu-end profile-dropdown">
-            <% if(!currUser) { %>
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="/signup">
-                <i class="fa-solid fa-user-plus me-2 dropdown-icon"></i>
-                Sign Up
-              </a>
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="/login">
-                <i class="fa-solid fa-user-check me-2 dropdown-icon"></i>
-                Login
-              </a>
-            </div>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
+        <div class="dropdown">
+          <button
+            class="btn stayhub-profile-button"
+            type="button"
+            id="profileDropdown"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            aria-label="Open account menu">
+            <i class="fa-regular fa-user" aria-hidden="true"></i>
+            <% if (currUser) { %>
+              <span class="stayhub-profile-name"><%= currUser.username %></span>
             <% } else { %>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="/logout">
-                <i class="fa-solid fa-right-from-bracket me-2 dropdown-icon"></i>
-                Logout
-              </a>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
+              <span class="stayhub-profile-name">Account</span>
             <% } %>
+            <i class="fa-solid fa-chevron-down stayhub-profile-chevron" aria-hidden="true"></i>
+          </button>
 
+          <ul class="dropdown-menu dropdown-menu-end stayhub-profile-menu" aria-labelledby="profileDropdown">
+            <% if (currUser) { %>
+              <li class="stayhub-menu-greeting">Signed in as <strong><%= currUser.username %></strong></li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="/logout">
+                  <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>Log out
+                </a>
+              </li>
+            <% } else { %>
+              <li>
+                <a class="dropdown-item" href="/login">
+                  <i class="fa-solid fa-arrow-right-to-bracket" aria-hidden="true"></i>Log in
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/signup">
+                  <i class="fa-solid fa-user-plus" aria-hidden="true"></i>Create an account
+                </a>
+              </li>
+            <% } %>
+            <li><hr class="dropdown-divider"></li>
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="/listings/new">
-                <i class="fa-solid fa-house-chimney me-2 dropdown-icon"></i>
-                Become a host
+              <a class="dropdown-item" href="/listings/new">
+                <i class="fa-solid fa-house-chimney" aria-hidden="true"></i>List your place
               </a>
             </li>
-
           </ul>
-
-        </li>
+        </div>
       </div>
     </div>
   </div>

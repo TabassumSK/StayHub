@@ -18,8 +18,28 @@ async function getCoordinates(location) {
 
 //index listings
 module.exports.index = async (req, res) => {
-  const allListings = await Listing.find({});
-  res.render("listings/index", { allListings });
+  const q = typeof req.query.q === "string" ? req.query.q.trim().slice(0, 100) : "";
+  const categoryOptions = [
+    { value: "rooms", label: "Rooms", icon: "fa-bed" },
+    { value: "mountains", label: "Mountains", icon: "fa-mountain-sun" },
+    { value: "farms", label: "Farms", icon: "fa-wheat-awn" },
+  ];
+  const requestedCategory = typeof req.query.category === "string" ? req.query.category : "";
+  const category = categoryOptions.some((option) => option.value === requestedCategory)
+    ? requestedCategory
+    : "";
+  const searchPattern = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const filter = {};
+  if (category) {
+    filter.category = category;
+  }
+  if (searchPattern) {
+    filter.$or = ["title", "description", "location", "country", "services"].map((field) => ({
+      [field]: { $regex: searchPattern, $options: "i" },
+    }));
+  }
+  const allListings = await Listing.find(filter);
+  res.render("listings/index", { allListings, q, category, categoryOptions });
 };
 
 // new listing

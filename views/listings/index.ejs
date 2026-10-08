@@ -1,132 +1,141 @@
 <% layout('/layouts/boilerplate') -%>
-<!-- <%= success %> -->
 
-<section class="hero-carousel" aria-label="Featured stays">
-  <div id="stayHubHero" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
-    <% const cardImages = [
-      '/images/place1.jpg',
-      '/images/place2.jpg',
-      '/images/place3.jpg',
-      '/images/place4.jpg',
-      '/images/place5.jpg'
-    ]; %>
+<main class="listings-page">
+  <section class="hero-carousel" aria-label="Find your next stay">
+    <div id="stayHubHero" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4500">
+      <% const heroImages = [
+        '/images/place1.jpg',
+        '/images/place2.jpg',
+        '/images/place3.jpg',
+        '/images/place4.jpg',
+        '/images/place5.jpg'
+      ]; %>
 
-    <div class="carousel-indicators">
-      <% cardImages.forEach((_, index) => { %>
-        <button
-          type="button"
-          data-bs-target="#stayHubHero"
-          data-bs-slide-to="<%= index %>"
-          class="<%= index === 0 ? 'active' : '' %>"
-          aria-current="<%= index === 0 ? 'true' : 'false' %>"
-          aria-label="Featured stay <%= index + 1 %>">
-        </button>
-      <% }); %>
-    </div>
+      <div class="carousel-indicators">
+        <% heroImages.forEach((_, index) => { %>
+          <button
+            type="button"
+            data-bs-target="#stayHubHero"
+            data-bs-slide-to="<%= index %>"
+            class="<%= index === 0 ? 'active' : '' %>"
+            aria-current="<%= index === 0 ? 'true' : 'false' %>"
+            aria-label="Featured stay <%= index + 1 %>">
+          </button>
+        <% }); %>
+      </div>
 
-    <div class="carousel-inner">
-      <% cardImages.forEach((cardImg, index) => { %>
-        <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-          <img src="<%= cardImg %>" class="hero-image" alt="A peaceful stay waiting to be discovered">
-          <div class="hero-caption">
-            <p class="hero-kicker">Your next escape starts here</p>
-            <h1>Stay somewhere worth remembering.</h1>
-            <a href="#listings" class="btn hero-btn">Explore stays <i class="fa-solid fa-arrow-right"></i></a>
+      <div class="carousel-inner">
+        <% heroImages.forEach((image, index) => { %>
+          <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+            <img src="<%= image %>" class="hero-image" alt="A beautiful place to stay" <%= index === 0 ? 'fetchpriority=high' : 'loading=lazy' %>>
+            <div class="hero-caption">
+              <p class="hero-kicker"><i class="fa-solid fa-sparkles" aria-hidden="true"></i> Find your kind of getaway</p>
+              <h1>Somewhere new.<br>Somewhere yours.</h1>
+              <p class="hero-description">Explore welcoming places and make your next trip feel like your own.</p>
+              <a href="#listings" class="btn hero-btn">Explore all stays <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
           </div>
-        </div>
-      <% }); %>
+        <% }); %>
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#stayHubHero" data-bs-slide="prev" aria-label="Previous featured stay">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#stayHubHero" data-bs-slide="next" aria-label="Next featured stay">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      </button>
     </div>
+  </section>
 
-    <button class="carousel-control-prev" type="button" data-bs-target="#stayHubHero" data-bs-slide="prev" aria-label="Previous slide">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#stayHubHero" data-bs-slide="next" aria-label="Next slide">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    </button>
-  </div>
-</section>
+  <nav class="listing-categories" aria-label="Filter stays by category">
+    <a
+      class="listing-category <%= category ? '' : 'is-active' %>"
+      href="/listings<%= q ? `?q=${encodeURIComponent(q)}` : '' %>"
+      <% if (!category) { %>aria-current="page"<% } %>>
+      <i class="fa-solid fa-border-all" aria-hidden="true"></i>
+      <span>All stays</span>
+    </a>
+    <% categoryOptions.forEach((option) => { %>
+      <a
+        class="listing-category <%= category === option.value ? 'is-active' : '' %>"
+        href="/listings?category=<%= option.value %><%= q ? `&q=${encodeURIComponent(q)}` : '' %>"
+        <% if (category === option.value) { %>aria-current="page"<% } %>>
+        <i class="fa-solid <%= option.icon %>" aria-hidden="true"></i>
+        <span><%= option.label %></span>
+      </a>
+    <% }); %>
+  </nav>
 
-<div id="filters">
-  <div class="filter">
-    <div><i class="fa-solid fa-fire"></i></div>
-    <p>Trending</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-bed"></i></div> 
-    <p>Rooms</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-mountain-city"></i></div>
-    <p>Iconic Cities</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-brands fa-fort-awesome"></i></div>
-    <p>Boats</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-mountain"></i></div>
-    <p>Mountains</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-person-swimming"></i></div>
-    <p>Pool</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-campground"></i></div>
-    <p>Camping</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-cow"></i></div>
-    <p>Farm</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-snowflake"></i></div>
-    <p>Arctic</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-igloo"></i></div>
-    <p>Domes</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-ship"></i></div>
-    <p>Boats</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-building"></i></div>
-    <p>Apartment</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-tents"></i></div>
-    <p>Campsite</p>
-  </div>
-  <div class="filter">
-    <div><i class="fa-solid fa-umbrella-beach"></i></div>
-    <p>Beach</p>
-  </div>
-  
-  <div class="tax-toggle">
-    <div class="form-check-reverse form-switch">
-      <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-      <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
-    </div>
-  </div>
-</div>
-
-
-<div id="listings" class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1 mt-2">
-  <% for(let listing of allListings) { %>
-  <a href="/listings/<%= listing._id %>" class="listing-link">
-    <div class="card col listing-card">
-      <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 20rem;">
-      <div class="card-img-overlay"><i class="fa-solid fa-heart heart-icon"></i></div>
-      <div class="card-body">
-        <p class="card-text">
-          <b><%= listing.title %></b> <br />
-          &#8377; <%= listing.price ? listing.price.toLocaleString("en-IN") : 'N/A' %> / night
-          <i class="tax-info"> &nbsp; &nbsp;+18% GST</i>
+  <section id="listings" class="properties-section" aria-labelledby="properties-title">
+    <div class="properties-heading">
+      <div>
+        <p class="listing-eyebrow"><%= q ? 'Your search' : category ? 'Browse by category' : 'Explore StayHub' %></p>
+        <h2 id="properties-title" class="properties-title">
+          <%= category ? `${categoryOptions.find((option) => option.value === category).label}${q ? ` matching “${q}”` : ''}` : q ? `Stays matching “${q}”` : 'Find a stay that feels right' %>
+        </h2>
+        <p class="properties-subtitle">
+          <%= q || category ? 'Browse the places that match your filters.' : 'Thoughtfully chosen places for wherever you want to go next.' %>
         </p>
       </div>
+
+      <div class="properties-tools">
+        <span class="properties-count">
+          <strong><%= allListings.length %></strong>
+          <%= allListings.length === 1 ? 'stay' : 'stays' %>
+        </span>
+        <label class="tax-toggle" for="flexSwitchCheckDefault">
+          <i class="fa-solid fa-receipt" aria-hidden="true"></i>
+          <span>Show prices with 18% tax</span>
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+        </label>
+      </div>
     </div>
-  </a>
-  <% } %>
-</div>
+
+    <% if (allListings.length > 0) { %>
+      <div class="property-grid">
+        <% for (let listing of allListings) { %>
+          <article class="property-card">
+            <a href="/listings/<%= listing._id %>" class="listing-link property-link">
+              <div class="property-image-wrap">
+                <img
+                  src="<%= listing.image.url %>"
+                  class="property-image"
+                  alt="<%= listing.title %>"
+                  loading="lazy">
+                <span class="property-image-label"><i class="fa-solid fa-compass" aria-hidden="true"></i> StayHub stay</span>
+              </div>
+
+              <div class="property-card-content">
+                <h3 class="property-title"><%= listing.title %></h3>
+                <p class="property-location">
+                  <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+                  <%= listing.location %><%= listing.country ? `, ${listing.country}` : '' %>
+                </p>
+                <div class="property-price">
+                  <span><strong>₹ <%= listing.price ? listing.price.toLocaleString("en-IN") : 'N/A' %></strong> <span class="price-unit">/ night</span></span>
+                  <% if (listing.price) { %>
+                    <span class="tax-info">+ ₹ <%= (listing.price * 0.18).toLocaleString("en-IN") %> tax</span>
+                  <% } %>
+                </div>
+              </div>
+            </a>
+            <button class="property-save heart-icon" type="button" data-listing-title="<%= listing.title %>" aria-label="Save <%= listing.title %>" aria-pressed="false">
+              <i class="fa-regular fa-heart" aria-hidden="true"></i>
+            </button>
+          </article>
+        <% } %>
+      </div>
+    <% } else { %>
+      <div class="properties-empty">
+        <span class="properties-empty-icon"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></span>
+        <h3><%= q || category ? 'No stays found' : 'Your next stay is waiting' %></h3>
+        <p>
+          <%= q || category ? `We couldn’t find stays matching your filters${q ? ` for “${q}”` : ''}. Try a different category or search term.` : 'There are no listings yet. Check back soon for places to explore.' %>
+        </p>
+        <% if (q || category) { %>
+          <a href="/listings<%= q ? `?q=${encodeURIComponent(q)}` : '' %>" class="btn btn-primary">Clear category filter</a>
+        <% } %>
+      </div>
+    <% } %>
+  </section>
+</main>

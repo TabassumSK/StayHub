@@ -43,7 +43,8 @@ const listingSchema = new Schema({
   },
   category: {
     type: String,
-    enum: ["mountains, rooms, farms"],
+    enum: ["mountains", "rooms", "farms"],
+    set: (value) => (value === "" ? undefined : value),
   }
 });
 

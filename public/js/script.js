@@ -25,15 +25,11 @@
 // toggle function working
 let taxSwitch = document.getElementById("flexSwitchCheckDefault");
 if (taxSwitch) {
-  taxSwitch.addEventListener("click", () => {
-    let taxInfo = document.getElementsByClassName("tax-info");
-    for (info of taxInfo) {
-      if (info.style.display != "inline") {
-        info.style.display = "inline";
-      } else {
-        info.style.display = "none";
-      }
-    }
+  taxSwitch.addEventListener("change", () => {
+    const taxInfo = document.querySelectorAll(".tax-info");
+    taxInfo.forEach((info) => {
+      info.style.display = taxSwitch.checked ? "inline" : "none";
+    });
   });
 }
 
@@ -41,11 +37,20 @@ if (taxSwitch) {
 let cardLikes = document.querySelectorAll(".heart-icon");
 cardLikes.forEach((cardLike) => {
   cardLike.addEventListener("click", (e) => {
-    // Prevent the click from triggering the card link
     e.preventDefault();
     e.stopPropagation();
 
-    // Toggle the red class on the heart icon
-    cardLike.classList.toggle("red");
+    const isSaved = cardLike.classList.toggle("is-saved");
+    cardLike.setAttribute("aria-pressed", String(isSaved));
+    cardLike.setAttribute(
+      "aria-label",
+      `${isSaved ? "Remove" : "Save"} ${cardLike.dataset.listingTitle || "stay"}`,
+    );
+
+    const heartIcon = cardLike.querySelector("i");
+    if (heartIcon) {
+      heartIcon.classList.toggle("fa-solid", isSaved);
+      heartIcon.classList.toggle("fa-regular", !isSaved);
+    }
   });
 });
