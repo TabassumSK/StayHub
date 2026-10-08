@@ -1,14 +1,37 @@
-<footer>
-    <div class="f-info">
-        <div class="f-info-socials">
-            <i class="fa-brands fa-square-facebook"></i>
-            <i class="fa-brands fa-square-instagram"></i>
-            <i class="fa-brands fa-linkedin"></i>
+<footer class="site-footer">
+    <div class="site-footer-inner">
+        <div class="footer-about">
+            <a href="/listings" class="footer-brand">
+                <i class="fa-regular fa-compass" aria-hidden="true"></i>
+                <span>StayHub</span>
+            </a>
+            <p>Thoughtful stays, memorable journeys. Find a place that feels like yours, wherever you go.</p>
         </div>
-        <div class="f-info-brand">&copy; StayHub Private Limited</div>
-        <div class="f-info-links">
+
+        <div class="footer-links">
+            <h2>Discover</h2>
+            <a href="/listings">Explore stays</a>
+            <a href="/listings/new">List your place</a>
+        </div>
+
+        <div class="footer-links">
+            <h2>Guest information</h2>
             <a href="/privacy">Privacy</a>
             <a href="/terms">Terms</a>
         </div>
+
+        <div class="footer-social">
+            <h2>Stay connected</h2>
+            <p>Travel inspiration and new places to discover.</p>
+            <div class="footer-social-icons" aria-label="StayHub social channels">
+                <i class="fa-brands fa-square-facebook" aria-hidden="true"></i>
+                <i class="fa-brands fa-square-instagram" aria-hidden="true"></i>
+                <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
+    <div class="site-footer-bottom">
+        <span>&copy; <%= new Date().getFullYear() %> StayHub Private Limited</span>
+        <span>Made for wherever you’re headed.</span>
     </div>
 </footer>

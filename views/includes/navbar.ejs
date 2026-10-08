@@ -1,13 +1,14 @@
 <style>
   .profile-menu {
-    border: 1px solid #ddd;
+    border: 1px solid #d5dfdd;
     padding: 6px 12px;
     border-radius: 30px;
     transition: 0.3s ease;
   }
 
   .profile-menu:hover {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-color: #0d6e6e;
+    box-shadow: 0 4px 15px rgb(13 110 110 / 12%);
   }
 
   .dropdown-item {
@@ -15,24 +16,25 @@
     font-weight: 500;
   }
 
-  li::marker {
+  .profile-dropdown li::marker {
     content: "";
   }
 
   .profile-menu i:first-child {
     font-size: 26px;
-    color: #444;
+    color: #0d6e6e;
   }
 
   .profile-menu i:last-child {
     font-size: 14px;
-    color: #666;
+    color: #687681;
     margin-left: 2px;
   }
 
   .profile-dropdown {
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    border: 1px solid #d5dfdd;
+    border-radius: 0.8rem;
+    box-shadow: 0 10px 28px rgb(31 41 51 / 12%);
     padding: 8px 0;
   }
 
@@ -40,17 +42,17 @@
     width: 18px;
     text-align: center;
     font-size: 16px;
-    color: #555;
+    color: #0d6e6e;
     transition: 0.3s;
   }
 
   .dropdown-item:hover .dropdown-icon {
-    color: #667eea;
+    color: #095757;
   }
 
   .host-btn {
     text-decoration: none;
-    background-color: #eff2ff;
+    background-color: #e8f2ef;
     border-radius: 1rem;
     padding: 0.3rem 1rem;
   }
@@ -60,20 +62,20 @@
     margin-top: 3px;
   }
 
-  .collapse {
-    display: flex;
+  #navbarNavAltMarkup {
     justify-content: space-between;
   }
 
   .profile-nav {
     display: flex;
+    align-items: center;
   }
 </style>
 
 
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top p-3">
+<nav class="navbar navbar-expand-lg bg-body-light border-bottom sticky-top p-3">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/"><i class="fa-brands fa-avianex"></i></a>
+    <a class="navbar-brand" href="/listings" aria-label="StayHub home"><i class="fa-brands fa-avianex"></i></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -83,7 +85,7 @@
       </div>
 
       <div class="navbar-nav">
-        <form class="d-flex">
+        <form class="d-flex" action="/listings" method="get">
           <input class="form-control me-2 search-ipt" type="search" placeholder="Search destination">
           <button class="btn search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
         </form>
@@ -106,7 +108,7 @@
           <a class="nav-link host-btn" href="/listings/new">Become a host</a>
         </div>
 
-        <li class="nav-item dropdown">
+        <div class="nav-item dropdown">
           <% if(!currUser) { %>
           <a class="nav-link d-flex align-items-center profile-menu" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fa-solid fa-user-circle fs-4"></i>
@@ -134,7 +136,7 @@
                 <i class="fa-solid fa-user-check me-2 dropdown-icon"></i>
                 Login
               </a>
-            </li>
+            </div>
 
             <li>
               <hr class="dropdown-divider">

@@ -1,6 +1,51 @@
 <% layout('/layouts/boilerplate') -%>
 <!-- <%= success %> -->
 
+<section class="hero-carousel" aria-label="Featured stays">
+  <div id="stayHubHero" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
+    <% const cardImages = [
+      '/images/place1.jpg',
+      '/images/place2.jpg',
+      '/images/place3.jpg',
+      '/images/place4.jpg',
+      '/images/place5.jpg'
+    ]; %>
+
+    <div class="carousel-indicators">
+      <% cardImages.forEach((_, index) => { %>
+        <button
+          type="button"
+          data-bs-target="#stayHubHero"
+          data-bs-slide-to="<%= index %>"
+          class="<%= index === 0 ? 'active' : '' %>"
+          aria-current="<%= index === 0 ? 'true' : 'false' %>"
+          aria-label="Featured stay <%= index + 1 %>">
+        </button>
+      <% }); %>
+    </div>
+
+    <div class="carousel-inner">
+      <% cardImages.forEach((cardImg, index) => { %>
+        <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+          <img src="<%= cardImg %>" class="hero-image" alt="A peaceful stay waiting to be discovered">
+          <div class="hero-caption">
+            <p class="hero-kicker">Your next escape starts here</p>
+            <h1>Stay somewhere worth remembering.</h1>
+            <a href="#listings" class="btn hero-btn">Explore stays <i class="fa-solid fa-arrow-right"></i></a>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#stayHubHero" data-bs-slide="prev" aria-label="Previous slide">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#stayHubHero" data-bs-slide="next" aria-label="Next slide">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    </button>
+  </div>
+</section>
+
 <div id="filters">
   <div class="filter">
     <div><i class="fa-solid fa-fire"></i></div>
@@ -68,7 +113,7 @@
 </div>
 
 
-<div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1 mt-2">
+<div id="listings" class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1 mt-2">
   <% for(let listing of allListings) { %>
   <a href="/listings/<%= listing._id %>" class="listing-link">
     <div class="card col listing-card">

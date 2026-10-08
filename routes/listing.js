@@ -5,6 +5,7 @@ const Listing = require("../models/listing");
 const ExpressError = require("../utils/ExpressError");
 const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 const listingControllers = require("../controllers/listings.js");
+const bookingControllers = require("../controllers/bookings.js");
 const multer = require("multer");
 const { storage } = require("../cloudConfig.js");
 const upload = multer({ storage });
@@ -55,6 +56,11 @@ router.get(
   isOwner,
   wrapAsync(listingControllers.renderEditForm),
 );
+
+router
+  .route("/:id/book")
+  .get(isLoggedIn, wrapAsync(bookingControllers.renderBookingForm))
+  .post(isLoggedIn, wrapAsync(bookingControllers.createBooking));
 
 //update route
 // router.put(

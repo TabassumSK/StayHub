@@ -1,0 +1,336 @@
+<style>
+  .booking-page {
+    --booking-ink: #24343a;
+    --booking-muted: #687681;
+    --booking-accent: #0d6e6e;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: clamp(1.25rem, 4vw, 3rem) 0 4rem;
+    color: var(--booking-ink);
+  }
+
+  .booking-eyebrow {
+    margin-bottom: 0.45rem;
+    color: var(--booking-accent);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .booking-title {
+    margin-bottom: 0.5rem;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+
+  .booking-intro {
+    margin-bottom: 2rem;
+    color: var(--booking-muted);
+  }
+
+  .booking-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+    align-items: start;
+    gap: 1.5rem;
+  }
+
+  .booking-form-card,
+  .booking-summary {
+    padding: clamp(1.2rem, 3vw, 2rem);
+    border: 1px solid #d7e1df;
+    border-radius: 1rem;
+    background: #f2f5f4;
+    box-shadow: 0 10px 28px rgb(31 41 51 / 7%);
+  }
+
+  .booking-form-card h2,
+  .booking-summary h2 {
+    margin-bottom: 1.2rem;
+    font-size: 1.2rem;
+    font-weight: 750;
+  }
+
+  .booking-form-card .form-label {
+    font-weight: 700;
+  }
+
+  .booking-form-card .form-control {
+    min-height: 48px;
+    border-color: #cbd8d5;
+    border-radius: 0.65rem;
+  }
+
+  .booking-form-card .form-control:focus {
+    border-color: var(--booking-accent);
+    box-shadow: 0 0 0 0.2rem rgb(13 110 110 / 12%);
+  }
+
+  .payment-options {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .payment-option {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: 1rem;
+    border: 1px solid #d1dcda;
+    border-radius: 0.75rem;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 150ms ease, background 150ms ease;
+  }
+
+  .payment-option:has(input:checked) {
+    border-color: var(--booking-accent);
+    background: #e8f2ef;
+    box-shadow: 0 0 0 1px var(--booking-accent);
+  }
+
+  .payment-option input {
+    margin-top: 0.25rem;
+    accent-color: var(--booking-accent);
+  }
+
+  .payment-option i {
+    margin-top: 0.1rem;
+    color: var(--booking-accent);
+    font-size: 1.1rem;
+  }
+
+  .payment-option strong,
+  .payment-option small {
+    display: block;
+  }
+
+  .payment-option strong {
+    margin-bottom: 0.2rem;
+    font-weight: 750;
+  }
+
+  .payment-option small {
+    color: var(--booking-muted);
+    line-height: 1.45;
+  }
+
+  .booking-notice {
+    margin: 1.25rem 0;
+    padding: 0.9rem 1rem;
+    border-left: 3px solid #bd8a33;
+    border-radius: 0.4rem;
+    background: #fbf4e6;
+    color: #665129;
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .booking-submit {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 0;
+    border-radius: 0.7rem;
+    background: var(--booking-accent);
+    color: #fff;
+    font-weight: 750;
+  }
+
+  .booking-submit:hover {
+    background: #095757;
+    color: #fff;
+  }
+
+  .booking-summary {
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .booking-summary-image {
+    display: block;
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+  }
+
+  .booking-summary-body {
+    padding: 1.25rem;
+  }
+
+  .booking-summary-body h2 {
+    margin-bottom: 0.3rem;
+    font-size: 1.1rem;
+  }
+
+  .booking-summary-location {
+    margin-bottom: 1.2rem;
+    color: var(--booking-muted);
+    font-size: 0.9rem;
+  }
+
+  .booking-summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-top: 1px solid #dce5e3;
+    color: #52616b;
+    font-size: 0.9rem;
+  }
+
+  .booking-summary-row strong {
+    color: var(--booking-ink);
+    text-align: right;
+  }
+
+  .booking-summary-total {
+    margin-top: 0.2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #cbd8d5;
+    color: var(--booking-ink);
+    font-weight: 750;
+  }
+
+  .booking-summary-total strong {
+    font-size: 1.15rem;
+  }
+
+  .booking-summary-help {
+    margin: 1rem 0 0;
+    color: var(--booking-muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 800px) {
+    .booking-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .booking-summary {
+      grid-row: 1;
+    }
+
+    .booking-summary-image {
+      height: 240px;
+    }
+  }
+</style>
+
+<% layout('/layouts/boilerplate') %>
+
+<main class="booking-page">
+  <p class="booking-eyebrow">Your next stay</p>
+  <h1 class="booking-title">Complete your booking</h1>
+  <p class="booking-intro">Choose your dates, tell us how many guests are coming, and select a payment method.</p>
+
+  <div class="booking-layout">
+    <section class="booking-form-card">
+      <h2>Trip details</h2>
+      <form action="/listings/<%= listing._id %>/book" method="post">
+        <div class="row g-3 mb-4">
+          <div class="col-sm-6">
+            <label for="check-in" class="form-label">Check-in</label>
+            <input id="check-in" class="form-control" type="date" name="booking[checkIn]" min="<%= minDate %>" required>
+          </div>
+          <div class="col-sm-6">
+            <label for="check-out" class="form-label">Check-out</label>
+            <input id="check-out" class="form-control" type="date" name="booking[checkOut]" min="<%= minDate %>" required>
+          </div>
+          <div class="col-12">
+            <label for="guest-count" class="form-label">Guests</label>
+            <input id="guest-count" class="form-control" type="number" name="booking[guests]" min="1" max="20" value="1" required>
+            <div class="form-text">Select between 1 and 20 guests.</div>
+          </div>
+        </div>
+
+        <h2>Payment method</h2>
+        <div class="payment-options">
+          <% paymentMethods.forEach((method, index) => { %>
+            <label class="payment-option" for="payment-<%= method.value %>">
+              <input id="payment-<%= method.value %>" type="radio" name="booking[paymentMethod]" value="<%= method.value %>" <%= index === 0 ? 'checked' : '' %> required>
+              <i class="fa-solid <%= method.value === 'upi' ? 'fa-mobile-screen-button' : method.value === 'card' ? 'fa-credit-card' : 'fa-house-circle-check' %>" aria-hidden="true"></i>
+              <span>
+                <strong><%= method.label %></strong>
+                <small><%= method.description %></small>
+              </span>
+            </label>
+          <% }); %>
+        </div>
+
+        <div class="booking-notice">
+          This project does not yet connect to a payment provider. Your selected method will be saved, but no payment will be charged and this stay is not confirmed.
+        </div>
+
+        <button class="btn booking-submit">Continue with selected method</button>
+      </form>
+    </section>
+
+    <aside class="booking-summary" aria-label="Booking price summary">
+      <img src="<%= listing.image.url %>" alt="<%= listing.title %>" class="booking-summary-image">
+      <div class="booking-summary-body">
+        <h2><%= listing.title %></h2>
+        <p class="booking-summary-location"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> <%= listing.location %>, <%= listing.country %></p>
+        <div class="booking-summary-row">
+          <span>Price per night</span>
+          <strong>₹ <%= listing.price.toLocaleString("en-IN") %></strong>
+        </div>
+        <div class="booking-summary-row">
+          <span>Length of stay</span>
+          <strong id="booking-nights">Choose dates</strong>
+        </div>
+        <div class="booking-summary-row booking-summary-total">
+          <span>Estimated total</span>
+          <strong id="booking-total">—</strong>
+        </div>
+        <p class="booking-summary-help">The total is calculated from the nightly rate and number of nights. No extra fees are included.</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<script>
+  (() => {
+    const checkIn = document.getElementById("check-in");
+    const checkOut = document.getElementById("check-out");
+    const nightsLabel = document.getElementById("booking-nights");
+    const totalLabel = document.getElementById("booking-total");
+    const nightlyPrice = <%= Number(listing.price) %>;
+    const currency = new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2 });
+
+    const updateSummary = () => {
+      if (checkIn.value) {
+        const firstValidCheckout = new Date(`${checkIn.value}T00:00:00.000Z`);
+        firstValidCheckout.setUTCDate(firstValidCheckout.getUTCDate() + 1);
+        checkOut.min = firstValidCheckout.toISOString().slice(0, 10);
+      }
+
+      if (!checkIn.value || !checkOut.value) {
+        nightsLabel.textContent = "Choose dates";
+        totalLabel.textContent = "—";
+        return;
+      }
+
+      const [inYear, inMonth, inDay] = checkIn.value.split("-").map(Number);
+      const [outYear, outMonth, outDay] = checkOut.value.split("-").map(Number);
+      const start = Date.UTC(inYear, inMonth - 1, inDay);
+      const end = Date.UTC(outYear, outMonth - 1, outDay);
+      const nights = (end - start) / 86400000;
+
+      if (nights <= 0) {
+        nightsLabel.textContent = "Check-out must be later";
+        totalLabel.textContent = "—";
+        return;
+      }
+
+      nightsLabel.textContent = `${nights} ${nights === 1 ? "night" : "nights"}`;
+      totalLabel.textContent = `₹ ${currency.format(nightlyPrice * nights)}`;
+    };
+
+    checkIn.addEventListener("change", updateSummary);
+    checkOut.addEventListener("change", updateSummary);
+  })();
+</script>

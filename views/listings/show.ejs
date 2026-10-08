@@ -1,302 +1,690 @@
- <style>
-  .show-img {
-    height: 450px;
-    /* width: 90%; */
+<style>
+  .listing-show {
+    --stayhub-ink: #1f2933;
+    --stayhub-muted: #687681;
+    --stayhub-accent: #0d6e6e;
+    --stayhub-page: #f2f5f4;
+    --stayhub-surface: #e5ebea;
+    --stayhub-card: #d9e2e0;
+    --stayhub-dark: #2b3a40;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 2.25rem clamp(1rem, 4vw, 3.5rem);
+    background: var(--stayhub-page);
+    color: var(--stayhub-ink);
+  }
+
+  .listing-heading {
+    margin-bottom: 1.5rem;
+  }
+
+  .listing-eyebrow {
+    margin-bottom: 0.45rem;
+    color: var(--stayhub-accent);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .listing-title {
+    margin-bottom: 0.65rem;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 750;
+    letter-spacing: -0.04em;
+  }
+
+  .listing-location-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    color: var(--stayhub-muted);
+    font-size: 0.95rem;
+  }
+
+  .listing-location-line i {
+    margin-right: 0.35rem;
+    color: var(--stayhub-accent);
+  }
+
+  .listing-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    background: #e7eeec;
+    box-shadow: 0 18px 45px rgb(31 41 51 / 12%);
+  }
+
+  .listing-hero-image {
+    display: block;
+    width: 100%;
+    height: clamp(340px, 56vw, 660px);
     object-fit: cover;
   }
 
-  #map {
-    height: 450px;
-    width: 90%;
+  .listing-details {
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(260px, 0.8fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border-bottom: 1px solid #e6eceb;
+    border-radius: 1.2rem;
+    background: var(--stayhub-surface);
   }
 
-  .map-box {
-    margin: 3rem;
-    max-width: 100%;
+  .listing-description h2,
+  .section-heading {
+    margin-bottom: 0.7rem;
+    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+    font-weight: 750;
+    letter-spacing: -0.03em;
+  }
+
+  .listing-description {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border: 1px solid #46545a;
+    border-radius: 1rem;
+    background: linear-gradient(145deg, #35464c, var(--stayhub-dark));
+    box-shadow: 0 12px 28px rgb(31 41 51 / 13%);
+    color: #f7faf9;
   }
 
-  .map-nm{
-    font-size: 1.5rem;
+  .listing-description h2 {
+    color: #fff;
   }
 
-  .listing-content {
-    padding: 2rem 0 0 1.5rem;
-    font-size: 1rem;
+  .listing-description p {
+    max-width: 70ch;
+    margin: 0;
+    color: #e0e8e7;
+    font-size: 1.02rem;
+    line-height: 1.9;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
   }
 
-  .content {
-    display: block;
-    gap: 2rem;
-    font-weight: 450;
+  .listing-description .listing-description-text {
+    padding-left: 0;
   }
 
-  .content b {
-    font-weight: 600;
+  .listing-description .listing-quick-facts {
+    margin-top: auto;
+    padding-top: 1.25rem;
   }
 
-  .review-container {
-    margin: 2rem 6rem 4rem 6rem;
-    max-width: 85%;
-  }
-
-  /* Parent container */
-  .reviews-wrapper {
+  .listing-quick-facts {
     display: flex;
     flex-wrap: wrap;
-    /* allows next row */
-    gap: 20px;
-    /* space between cards */
+    align-items: stretch;
+    gap: 0.75rem;
+    margin-top: 0;
   }
 
-  /* Each review card */
-  .review-card {
-    flex: 0 0 calc(50% - 10px);
-    /* 2 per row */
+  .listing-fact {
+    flex: 0 1 auto;
+    min-height: 0;
+    max-width: 100%;
+    width: fit-content;
+    padding: 0.85rem 1rem;
+    border: 1px solid rgb(255 255 255 / 22%);
+    border-radius: 0.85rem;
+    background: linear-gradient(145deg, #50636a, #3d5056);
+    box-shadow: inset 0 1px rgb(255 255 255 / 10%), 0 5px 14px rgb(17 29 33 / 15%);
   }
 
-  /* Responsive for mobile */
-  @media (max-width: 768px) {
-    .review-card {
-      flex: 0 0 100%;
-      /* 1 per row on mobile */
-    }
+  .listing-fact i {
+    margin-right: 0.4rem;
+    color: #9ed4c5;
+    font-size: 0.85rem;
   }
 
-  /* Main Review Container */
-  .rating-container {
-    max-width: 70%;
-    margin: 40px auto;
+  .listing-fact span {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: #c1cfcd;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 
-  /* Make form look like a card */
-  .rating-container form {
-    background: #ffffff;
-    padding: 15px 20px;
-    border-radius: 16px;
-    border: 2px solid rgb(222, 217, 217);
-    transition: 0.3s ease;
+  .listing-fact strong {
+    display: block;
+    padding-left: 1.25rem;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
   }
 
-  /* Smooth hover effect */
-  .rating-container form:hover {
-    transform: translateY(-3px);
-  }
-
-  /* Improve heading spacing */
-  .rating-container h4 {
-    margin-bottom: 20px;
-  }
-
-  /* Better textarea look */
-  .rating-container textarea {
-    border-radius: 10px;
-    padding: 12px;
-    resize: none;
-  }
-
-  /* Better submit button */
-  .rating-container button {
-    border-radius: 30px;
-    padding: 8px 25px;
+  .listing-fact strong small {
+    display: block;
+    margin-top: 0.15rem;
+    color: #d2ddda;
+    font-size: 0.82rem;
     font-weight: 500;
-    transition: 0.3s ease;
-    background-color: black;
-    color: white;
   }
 
-  /* Remove harsh hr look */
-  .rating-container hr {
-    opacity: 0.1;
+  .listing-sidebar {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
   }
 
-  /* comment box */
-  .cmt-box {
-    border: 1px solid rgb(171, 167, 167);
+  .listing-host-card,
+  .listing-services-card {
+    align-self: start;
+    padding: 1.5rem;
+    border: 1px solid #34464c;
+    border-radius: 1rem;
+    background: linear-gradient(145deg, #40545b, var(--stayhub-dark));
+    box-shadow: 0 12px 28px rgb(31 41 51 / 14%);
+    color: #f7faf9;
   }
 
-  .location-icon {
+  .listing-host-card .host-label {
+    margin-bottom: 0.45rem;
+    color: #c1cfcd;
+    font-size: 0.85rem;
+  }
+
+  .listing-host-card .host-name {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .listing-host-card .host-name i {
+    margin-right: 0.5rem;
+    color: #9ed4c5;
+  }
+
+  .listing-services-card h2 {
+    margin: 0 0 0.7rem;
+    color: #fff;
     font-size: 1rem;
+    font-weight: 750;
+  }
+
+  .listing-services {
+    display: grid;
+    gap: 0.65rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .listing-services li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    color: #e1e9e7;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+
+  .listing-services li i {
+    flex: 0 0 auto;
+    margin-top: 0.2rem;
+    color: #9ed4c5;
+  }
+
+  .host-services-value {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin: 0;
+    color: #e1e9e7;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+  }
+
+  .host-services-value i {
+    margin-top: 0.2rem;
+    color: #9ed4c5;
+  }
+
+  .listing-price {
+    padding-top: 1.2rem;
+    border-top: 1px solid rgb(255 255 255 / 20%);
+  }
+
+  .listing-price strong {
+    font-size: 1.65rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+
+  .listing-price span {
+    color: #c1cfcd;
+    font-size: 0.9rem;
+  }
+
+  .listing-owner-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 1.25rem;
+  }
+
+  .listing-owner-actions .btn {
+    border-radius: 0.65rem;
+  }
+
+  .book-stay-link {
+    display: block;
+    margin-top: 1.25rem;
+    padding: 0.8rem 1rem;
+    border-radius: 0.7rem;
+    background: #9ed4c5;
+    color: #203238;
+    font-weight: 800;
+    text-align: center;
+    text-decoration: none;
+    transition: background 150ms ease, transform 150ms ease;
+  }
+
+  .book-stay-link:hover {
+    transform: translateY(-1px);
+    background: #b7e5d8;
+    color: #203238;
+  }
+
+  .booking-payment-note {
+    margin: 0.65rem 0 0;
+    color: #c1cfcd;
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  .listing-reviews {
+    padding: 2.5rem 0 0;
+  }
+
+  .review-heading-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .review-heading-row p {
+    margin: 0 0 0.7rem;
+    color: var(--stayhub-muted);
+  }
+
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .review-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 220px;
+    padding: 1.25rem;
+    border: 1px solid #d5dfdd;
+    border-radius: 1rem;
+    background: var(--stayhub-surface);
+    box-shadow: 0 8px 24px rgb(31 41 51 / 7%);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .review-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgb(31 41 51 / 10%);
   }
 
   .reviewer-profile {
     display: flex;
-    flex-direction: row;
-    padding-bottom: 0.3rem;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.65rem;
   }
 
-  .fa-circle-user {
-    font-size: 1.5rem;
-    color: #0D6EFD;
-    margin-right: 0.3rem;
+  .reviewer-profile i {
+    color: var(--stayhub-accent);
+    font-size: 1.65rem;
   }
 
-  .show-btns {
-    margin-top: 1rem;
+  .reviewer-profile h3 {
+    overflow: hidden;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 750;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .review-card .starability-result {
+    margin: 0;
+  }
+
+  .review-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .review-rating-value {
+    color: var(--stayhub-muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .review-comment {
+    flex: 1;
+    margin: 0 0 1rem;
+    color: #52616b;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+
+  .review-comment::before {
+    content: "“";
+    color: var(--stayhub-accent);
+    font-size: 1.2em;
+    font-weight: 800;
+  }
+
+  .review-comment::after {
+    content: "”";
+    color: var(--stayhub-accent);
+    font-size: 1.2em;
+    font-weight: 800;
+  }
+
+  .review-delete {
+    align-self: flex-start;
+    border-radius: 0.55rem;
+  }
+
+  .reviews-empty {
+    padding: 1.5rem;
+    border: 1px dashed #bdcbc8;
+    border-radius: 1rem;
+    background: var(--stayhub-surface);
+    color: var(--stayhub-muted);
+  }
+
+  .rating-section {
+    max-width: 760px;
+    margin: 2rem 0 0;
+    padding: clamp(1.25rem, 4vw, 2rem);
+    border: 1px solid #d5dfdd;
+    border-radius: 1.1rem;
+    background: var(--stayhub-surface);
+  }
+
+  .rating-section > p {
+    color: var(--stayhub-muted);
+  }
+
+  .rating-section .form-label {
+    font-weight: 700;
+  }
+
+  .rating-section textarea {
+    min-height: 130px;
+    border-color: #d8e2e0;
+    border-radius: 0.75rem;
+    resize: vertical;
+  }
+
+  .rating-section textarea:focus {
+    border-color: var(--stayhub-accent);
+    box-shadow: 0 0 0 0.2rem rgb(13 110 110 / 12%);
+  }
+
+  .review-submit {
+    padding: 0.7rem 1.2rem;
+    border: 0;
+    border-radius: 0.65rem;
+    background: var(--stayhub-accent);
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .review-submit:hover {
+    background: #095757;
+    color: #fff;
+  }
+
+  .map-section {
+    padding-top: 2.5rem;
+  }
+
+  .map-heading {
+    margin-bottom: 0.4rem;
+    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+    font-weight: 750;
+  }
+
+  .map-caption {
+    margin-bottom: 1.25rem;
+    color: var(--stayhub-muted);
+  }
+
+  #map {
+    width: 100%;
+    height: clamp(330px, 42vw, 500px);
+    overflow: hidden;
+    border: 1px solid #d5dfdd;
+    border-radius: 1rem;
+    box-shadow: 0 12px 32px rgb(31 41 51 / 9%);
+  }
+
+  @media (max-width: 1100px) {
+    .reviews-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 800px) {
+    .listing-details {
+      grid-template-columns: 1fr;
+    }
+
+    .listing-host-card {
+      max-width: none;
+    }
+
+    .reviews-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 540px) {
+    .listing-show {
+      padding-top: 1.25rem;
+    }
+
+    .listing-hero,
+    .listing-hero-image {
+      border-radius: 0.85rem;
+    }
+
+    .listing-hero-image {
+      height: 340px;
+    }
+
+      .listing-details {
+        padding: 1rem;
+      }
+
+      .listing-description {
+        padding: 1rem;
+      }
+
+      .listing-reviews,
+      .map-section {
+        padding-top: 2rem;
+      }
+
+    .reviews-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .review-card {
+      transition: none;
+    }
+
+    .review-card:hover {
+      transform: none;
+    }
   }
 </style>
 
-
-
-
 <% layout('/layouts/boilerplate') %>
 
-<div class="container mt-4">
+<main class="listing-show">
+  <header class="listing-heading">
+    <p class="listing-eyebrow">Find your place to unwind</p>
+    <h1 class="listing-title"><%= listing.title %></h1>
+  </header>
 
-
-  <h2 class="fw-bold mb-4 text-center"><%= listing.title %></h2>
-
-
-  <div class="row p-4 rounded">
-
-
-    <div class="col-md-7">
-      <img src="<%= listing.image.url %>" class="img-fluid w-100 rounded shadow-sm show-img" alt="listing_image">
-    </div>
-
-
-    <div class="col-md-5 listing-content">
-      <p>
-        <span class="content"><b>Owned By:</b>
-          <%= listing.owner.username %></span>
-      </p>
-
-      <p><span class="content"><b>Description:</b>
-          <%= listing.description %></span>
-      </p>
-
-      <p><span class="content"><b>Price:</b>
-          ₹ <%= listing.price.toLocaleString("en-IN") %> / night</span>
-      </p>
-
-      <p>
-        <span class="content">
-          <b>Location:</b>
-          <i class="fa-solid fa-location-dot location-icon"></i>
-          <%= listing.location %>
-        </span>
-      </p>
-
-      <p>
-        <span class="content">
-          <b>Country: </b>
-          <i class="fa-solid fa-globe location-icon"></i>
-          <%= listing.country %>
-        </span>
-      </p>
-
-      <% if (listing.services) { %>
-      <p>
-        <span class="content">
-          <b>Services: </b>
-          <%= listing.services %>
-        </span>
-      </p>
-      <% } %>
-
-
-
-      <% if (currUser && listing.owner._id.equals(currUser._id)) { %>
-
-      <div class="d-flex gap-3 mt-4">
-        <a href="/listings/<%= listing._id %>/edit" class="btn btn-primary">Edit</a>
-
-        <form action="/listings/<%= listing._id %>?_method=DELETE" method="post">
-          <button class="btn btn-dark">Delete</button>
-        </form>
-      </div>
-      <% } %>
-    </div>
-
+  <div class="listing-hero">
+    <img src="<%= listing.image.url %>" class="listing-hero-image" alt="<%= listing.title %>">
   </div>
 
-  <hr />
+  <section class="listing-details" aria-label="Listing details">
+    <div class="listing-description">
+      <h2>About this stay</h2>
+      <p class="listing-description-text"><%= listing.description %></p>
 
-
-  <div class="review-container">
-    <% if(listing.reviews.length > 0) { %>
-    <div class="review-container">
-      <h4 class="fw-bold mb-3">All Reviews</h4>
-
-      <div class="reviews-wrapper">
-        <% for (let review of listing.reviews) { %>
-
-        <div class="review-card">
-          <div class="card shadow-sm h-100">
-            <div class="p-3">
-              <div class="reviewer-profile">
-                <i class="fa-solid fa-circle-user"></i>
-                <h6 class="fw-bold">@<%= review.author.username %></h6>
-              </div>
-
-              <p class="starability-result" data-rating="<%= review.rating %>"></p>
-
-              <p><%= review.comment %></p>
-
-              <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-                <button class="btn btn-sm btn-dark">Delete</button>
-              </form>
-            </div>
-          </div>
+      <div class="listing-quick-facts">
+        <div class="listing-fact">
+          <span><i class="fa-solid fa-location-dot" aria-hidden="true"></i>Location</span>
+          <strong><%= listing.location %><small><%= listing.country %></small></strong>
         </div>
+        <div class="listing-fact">
+          <span><i class="fa-solid fa-star" aria-hidden="true"></i>Guest reviews</span>
+          <strong><%= listing.reviews.length %> <%= listing.reviews.length === 1 ? 'review' : 'reviews' %></strong>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="listing-sidebar">
+      <aside class="listing-host-card" aria-label="Host and price">
+        <p class="host-label">Your host</p>
+        <p class="host-name"><i class="fa-solid fa-circle-user" aria-hidden="true"></i><%= listing.owner.username %></p>
+        <div class="listing-price">
+          <strong>₹ <%= listing.price.toLocaleString("en-IN") %></strong>
+          <span> / night</span>
+        </div>
+
+        <% if (currUser && listing.owner._id.equals(currUser._id)) { %>
+          <div class="listing-owner-actions">
+            <a href="/listings/<%= listing._id %>/edit" class="btn btn-primary">Edit listing</a>
+            <form action="/listings/<%= listing._id %>?_method=DELETE" method="post">
+              <button class="btn btn-outline-dark">Delete</button>
+            </form>
+          </div>
+        <% } else { %>
+          <a href="/listings/<%= listing._id %>/book" class="book-stay-link">Book this place</a>
+          <p class="booking-payment-note">Choose your dates and payment method. No payment is collected yet.</p>
+        <% } %>
+      </aside>
+
+      <% const serviceItems = String(listing.services || "").split(",").map(service => service.trim()).filter(Boolean); %>
+      <% if (serviceItems.length > 0) { %>
+        <section class="listing-services-card" aria-label="Services">
+          <h2>Services</h2>
+          <ul class="listing-services">
+            <% for (let service of serviceItems) { %>
+              <li><i class="fa-solid fa-circle-check" aria-hidden="true"></i><span><%= service %></span></li>
+            <% } %>
+          </ul>
+        </section>
+      <% } %>
+
+    </div>
+  </section>
+
+  <section class="listing-reviews" aria-labelledby="reviews-title">
+    <div class="review-heading-row">
+      <div>
+        <h2 class="section-heading" id="reviews-title">Guest reviews</h2>
+        <p><%= listing.reviews.length %> <%= listing.reviews.length === 1 ? 'guest has shared' : 'guests have shared' %> their experience. Read their ratings and comments below.</p>
+      </div>
+    </div>
+
+    <% if (listing.reviews.length > 0) { %>
+      <div class="reviews-grid">
+        <% for (let review of listing.reviews) { %>
+          <article class="review-card">
+            <div class="reviewer-profile">
+              <i class="fa-solid fa-circle-user" aria-hidden="true"></i>
+              <h3>@<%= review.author.username %></h3>
+            </div>
+            <div class="review-rating">
+              <p class="starability-result" data-rating="<%= review.rating %>" aria-label="<%= review.rating %> out of 5 stars"></p>
+              <span class="review-rating-value"><%= review.rating %> / 5</span>
+            </div>
+            <p class="review-comment"><%= review.comment %></p>
+            <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+              <button class="btn btn-sm btn-outline-dark review-delete">Delete review</button>
+            </form>
+          </article>
         <% } %>
       </div>
+    <% } else { %>
+      <div class="reviews-empty">No reviews yet. Be the first guest to share your experience.</div>
+    <% } %>
+
+    <div class="rating-section">
+      <% if (currUser) { %>
+        <h2 class="section-heading">Share your experience</h2>
+        <p>Your feedback helps other guests find a stay they’ll love.</p>
+        <form action="/listings/<%= listing._id %>/reviews" method="post" novalidate class="needs-validation">
+          <div class="mb-3">
+            <p id="rating-label" class="form-label">Your rating</p>
+            <fieldset class="starability-slot" aria-labelledby="rating-label">
+              <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+              <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+              <label for="first-rate1" title="Terrible">1 star</label>
+              <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+              <label for="first-rate2" title="Not good">2 stars</label>
+              <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+              <label for="first-rate3" title="Average">3 stars</label>
+              <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+              <label for="first-rate4" title="Very good">4 stars</label>
+              <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+              <label for="first-rate5" title="Amazing">5 stars</label>
+            </fieldset>
+          </div>
+          <div class="mb-3">
+            <label for="review-comment" class="form-label">Your review</label>
+            <textarea id="review-comment" name="review[comment]" class="form-control" rows="4" required></textarea>
+            <div class="invalid-feedback">Please add some comments for your review.</div>
+          </div>
+          <button class="btn review-submit">Post review</button>
+        </form>
+      <% } else { %>
+        <h2 class="section-heading">Stayed here?</h2>
+        <p>Sign in to share your experience and help other travelers.</p>
+        <a href="/login" class="btn review-submit">Sign in to review</a>
+      <% } %>
     </div>
-    <% } %>
-  </div>
+  </section>
 
-
-  <div class="mt-5 rating-container">
-
-    <% if (currUser) { %>
-    <h4 class="fw-bold">Leave a Review</h4>
-
-    <form action="/listings/<%= listing._id %>/reviews" method="post" novalidate class="needs-validation">
-
-      <div>
-        <label for="rating" class="form-label fw-bold">Rating</label>
-        <fieldset class="starability-slot">
-          <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
-          <input type="radio" id="first-rate1" name="review[rating]" value="1" />
-          <label for="first-rate1" title="Terrible">1 star</label>
-          <input type="radio" id="first-rate2" name="review[rating]" value="2" />
-          <label for="first-rate2" title="Not good">2 stars</label>
-          <input type="radio" id="first-rate3" name="review[rating]" value="3" />
-          <label for="first-rate3" title="Average">3 stars</label>
-          <input type="radio" id="first-rate4" name="review[rating]" value="4" />
-          <label for="first-rate4" title="Very good">4 stars</label>
-          <input type="radio" id="first-rate5" name="review[rating]" value="5" />
-          <label for="first-rate5" title="Amazing">5 stars</label>
-        </fieldset>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label fw-bold">Comment</label>
-        <textarea name="review[comment]" class="form-control cmt-box" rows="4" required></textarea>
-        <div class="invalid-feedback">
-          Please add some comments for review
-        </div>
-      </div>
-
-      <button class="btn btn-outline-dark">Submit</button>
-    </form>
-    <% } %>
-  </div>
-
-  <hr />
-
-
-
-  <div class="mt-5 map-box">
-    <h4 class="fw-bold mb-4 map-nm">Where you'll be</h4>
-    <div id="map" class="rounded shadow"></div>
-  </div>
-
-</div>
-
-
+  <section class="map-section" aria-labelledby="map-title">
+    <h2 class="map-heading" id="map-title">Explore the area</h2>
+    <p class="map-caption"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> <%= listing.location %>, <%= listing.country %></p>
+    <div id="map" role="application" aria-label="Map showing the listing location"></div>
+  </section>
+</main>
 
 <script>
   const MAP_TOKEN = "<%= MAP_TOKEN %>";

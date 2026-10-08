@@ -1,8 +1,10 @@
 <% layout("/layouts/boilerplate") %>
 
-<div class="row mt-3">
-  <div class="col-8 offset-2">
-    <h3>Edit your Listing</h3>
+<main class="editor-page">
+  <section class="editor-card">
+    <p class="listing-eyebrow">Keep your stay up to date</p>
+    <h1 class="editor-heading">Edit your listing</h1>
+    <p class="editor-intro">Update the information guests see about your place.</p>
     <form
       action="/listings/<%= listing._id %>?_method=put"
       method="post"
@@ -11,8 +13,9 @@
       enctype="multipart/form-data"
     >
       <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
+        <label for="title" class="form-label">Listing title</label>
         <input
+          id="title"
           name="listing[title]"
           value="<%=listing.title%>"
           type="text"
@@ -24,29 +27,32 @@
 
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
-        <textarea name="listing[description]" class="form-control" required>
-<%=listing.description%></textarea
-        >
+        <textarea id="description" name="listing[description]" class="form-control" rows="5" required><%= listing.description %></textarea>
         <div class="invalid-feedback">please enter short description</div>
       </div>
 
       <div class="mb-3">
-        Original Listing Image <br />
-        <img src="<%= originalImageUrl %>" />
+        <label class="form-label">Current photo</label>
+        <div>
+          <img src="<%= originalImageUrl %>" class="edit-listing-image" alt="Current listing photo">
+        </div>
       </div>
 
       <div class="mb-3">
-        <label for="image" class="form-label">Upload New Image</label>
-        <input name="listing[image]" type="file" class="form-control" />
-        <div class="invalid-feedback">please enter valid link of image</div>
+        <label for="image" class="form-label">Replace photo (optional)</label>
+        <input id="image" name="listing[image]" type="file" accept="image/*" class="form-control" />
+        <div class="invalid-feedback">Please select a valid image.</div>
       </div>
 
       <div class="row">
         <div class="mb-3 col-md-4">
-          <label for="price" class="form-label">Price</label>
+          <label for="price" class="form-label">Price per night (₹)</label>
           <input
+            id="price"
             name="listing[price]"
             value="<%=listing.price%>"
+            type="number"
+            min="0"
             class="form-control"
             required
           />
@@ -56,6 +62,7 @@
       <div class="mb-3 col-md-8">
           <label for="country" class="form-label">Country</label>
           <input
+            id="country"
             name="listing[country]"
             value="<%=listing.country%>"
             type="text"
@@ -67,8 +74,9 @@
       </div>
 
       <div class="mb-3">
-        <label for="services" class="form-label">Services (what this place provides)</label>
+        <label for="services" class="form-label">Services</label>
         <input
+          id="services"
           name="listing[services]"
           value="<%=listing.services%>"
           type="text"
@@ -79,8 +87,9 @@
 
 
       <div class="mb-3">
-        <label for="location" class="form-label">Location</label>
+        <label for="location" class="form-label">City or area</label>
         <input
+          id="location"
           name="listing[location]"
           value="<%=listing.location%>"
           type="text"
@@ -90,11 +99,10 @@
         <div class="invalid-feedback">Location should be valid</div>
       </div>
 
-      <button class="btn btn-dark edit-btn mt-3">Edit</button>
-      <br />
-      <br />
-      <br />
-      <br />
+      <div class="d-flex flex-wrap gap-2 mt-4">
+        <button class="btn btn-primary edit-btn px-4">Save changes</button>
+        <a class="btn btn-outline-dark px-4" href="/listings/<%= listing._id %>">Cancel</a>
+      </div>
     </form>
-  </div>
-</div>
+  </section>
+</main>

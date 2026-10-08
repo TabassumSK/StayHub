@@ -34,33 +34,23 @@
 
 
 <style>
-  body {
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-}
-
-.card {
-  transition: 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.form-control {
-  border: 2px solid rgb(206, 199, 199);
-}
-
+  .auth-card {
+    width: min(100%, 460px);
+    padding: clamp(1.5rem, 5vw, 2.5rem);
+  }
 </style>
 
 <% layout("/layouts/boilerplate") %>
 
-<div class="d-flex justify-content-center align-items-center mt-5">
-  <div class="card shadow-lg border-0 rounded-4 p-4" style="width: 450px">
-    <h3 class="text-center mb-4 fw-bold">Login to Wanderlust</h3>
+<main class="auth-page d-flex justify-content-center align-items-center">
+  <section class="auth-card">
+    <p class="listing-eyebrow text-center">Welcome back</p>
+    <h1 class="auth-heading text-center">Log in to StayHub</h1>
+    <p class="auth-intro text-center">Sign in to continue planning your next stay.</p>
 
     <form action="/login" method="POST" class="needs-validation" novalidate>
       <div class="mb-3">
-        <label for="username" class="form-label fw-semibold">Username</label>
+        <label for="username" class="form-label">Username</label>
         <input
           name="username"
           id="username"
@@ -72,7 +62,7 @@
       </div>
 
       <div class="mb-3">
-        <label for="password" class="form-label fw-semibold">Password</label>
+        <label for="password" class="form-label">Password</label>
         <input
           name="password"
           id="password"
@@ -83,14 +73,14 @@
       </div>
 
       <div class="d-grid">
-        <button class="btn btn-primary rounded-3">Login</button>
+        <button class="btn btn-primary">Log in</button>
       </div>
 
       <p class="text-center mt-3 mb-0">
-        haven't an account?
-        <a href="/signup" class="text-decoration-none fw-semibold">Sign Up</a>
+        New to StayHub?
+        <a href="/signup" class="text-decoration-none fw-semibold">Create an account</a>
       </p>
 
     </form>
-  </div>
-</div>
+  </section>
+</main>
