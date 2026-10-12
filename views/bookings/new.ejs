@@ -262,16 +262,17 @@
         </div>
 
         <div class="booking-notice">
-          This project does not yet connect to a payment provider. Your selected method will be saved, but no payment will be charged and this stay is not confirmed.
+          This demo saves your selected payment method only. No payment will be charged and your reservation is not confirmed.
         </div>
 
         <button class="btn booking-submit">Continue with selected method</button>
       </form>
     </section>
 
-    <aside class="booking-summary" aria-label="Booking price summary">
+    <aside class="booking-summary" aria-label="Booking receipt preview">
       <img src="<%= listing.image.url %>" alt="<%= listing.title %>" class="booking-summary-image">
       <div class="booking-summary-body">
+        <p class="booking-eyebrow">Receipt preview</p>
         <h2><%= listing.title %></h2>
         <p class="booking-summary-location"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> <%= listing.location %>, <%= listing.country %></p>
         <div class="booking-summary-row">
@@ -279,14 +280,34 @@
           <strong>₹ <%= listing.price.toLocaleString("en-IN") %></strong>
         </div>
         <div class="booking-summary-row">
+          <span>Check-in</span>
+          <strong id="receipt-check-in">Choose date</strong>
+        </div>
+        <div class="booking-summary-row">
+          <span>Check-out</span>
+          <strong id="receipt-check-out">Choose date</strong>
+        </div>
+        <div class="booking-summary-row">
           <span>Length of stay</span>
           <strong id="booking-nights">Choose dates</strong>
         </div>
-        <div class="booking-summary-row booking-summary-total">
-          <span>Estimated total</span>
-          <strong id="booking-total">—</strong>
+        <div class="booking-summary-row">
+          <span>Guests</span>
+          <strong id="receipt-guests">1 guest</strong>
         </div>
-        <p class="booking-summary-help">The total is calculated from the nightly rate and number of nights. No extra fees are included.</p>
+        <div class="booking-summary-row">
+          <span>Payment method</span>
+          <strong id="receipt-payment-method">UPI</strong>
+        </div>
+        <div class="booking-summary-row">
+          <span id="receipt-price-label">Stay total</span>
+          <strong id="receipt-subtotal">Choose dates</strong>
+        </div>
+        <div class="booking-summary-row booking-summary-total">
+          <span>Amount due</span>
+          <strong id="booking-total">Choose dates</strong>
+        </div>
+        <p class="booking-summary-help">Receipt preview only. No payment is collected until a real payment flow is connected.</p>
       </div>
     </aside>
   </div>
@@ -296,12 +317,40 @@
   (() => {
     const checkIn = document.getElementById("check-in");
     const checkOut = document.getElementById("check-out");
+    const guestCount = document.getElementById("guest-count");
     const nightsLabel = document.getElementById("booking-nights");
     const totalLabel = document.getElementById("booking-total");
+    const receiptCheckIn = document.getElementById("receipt-check-in");
+    const receiptCheckOut = document.getElementById("receipt-check-out");
+    const receiptGuests = document.getElementById("receipt-guests");
+    const receiptPaymentMethod = document.getElementById("receipt-payment-method");
+    const receiptSubtotal = document.getElementById("receipt-subtotal");
     const nightlyPrice = <%= Number(listing.price) %>;
     const currency = new Intl.NumberFormat("en-IN", { maximumFractionDigits: 2 });
+    const dateFormatter = new Intl.DateTimeFormat("en-IN", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+      timeZone: "UTC",
+    });
+
+    const formatDate = (value) => {
+      if (!value) return "Choose date";
+      return dateFormatter.format(new Date(`${value}T00:00:00.000Z`));
+    };
+
+    const updateGuestAndPayment = () => {
+      const guests = Number(guestCount.value) || 0;
+      receiptGuests.textContent = `${guests} ${guests === 1 ? "guest" : "guests"}`;
+      const selectedMethod = document.querySelector('input[name="booking[paymentMethod]"]:checked');
+      const selectedLabel = selectedMethod?.closest(".payment-option")?.querySelector("strong")?.textContent;
+      receiptPaymentMethod.textContent = selectedLabel || "Select a method";
+    };
 
     const updateSummary = () => {
+      receiptCheckIn.textContent = formatDate(checkIn.value);
+      receiptCheckOut.textContent = formatDate(checkOut.value);
+
       if (checkIn.value) {
         const firstValidCheckout = new Date(`${checkIn.value}T00:00:00.000Z`);
         firstValidCheckout.setUTCDate(firstValidCheckout.getUTCDate() + 1);
@@ -310,7 +359,8 @@
 
       if (!checkIn.value || !checkOut.value) {
         nightsLabel.textContent = "Choose dates";
-        totalLabel.textContent = "—";
+        receiptSubtotal.textContent = "Choose dates";
+        totalLabel.textContent = "Choose dates";
         return;
       }
 
@@ -322,15 +372,23 @@
 
       if (nights <= 0) {
         nightsLabel.textContent = "Check-out must be later";
+        receiptSubtotal.textContent = "—";
         totalLabel.textContent = "—";
         return;
       }
 
+      const total = nightlyPrice * nights;
       nightsLabel.textContent = `${nights} ${nights === 1 ? "night" : "nights"}`;
-      totalLabel.textContent = `₹ ${currency.format(nightlyPrice * nights)}`;
+      receiptSubtotal.textContent = `₹ ${currency.format(total)}`;
+      totalLabel.textContent = `₹ ${currency.format(total)}`;
     };
 
     checkIn.addEventListener("change", updateSummary);
     checkOut.addEventListener("change", updateSummary);
+    guestCount.addEventListener("input", updateGuestAndPayment);
+    document.querySelectorAll('input[name="booking[paymentMethod]"]').forEach((method) => {
+      method.addEventListener("change", updateGuestAndPayment);
+    });
+    updateGuestAndPayment();
   })();
 </script>

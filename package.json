@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon app.js",
+    "seed:reviews": "node initData/seedReviews.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Tabassum Shaikh",

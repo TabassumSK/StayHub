@@ -120,3 +120,5 @@ CLOUD_API_SECRET=your_api_secret
 # MapTiler Setup
 MAP_TOKEN=your_maptiler_token
 ```
+
+The booking flow is a demo: guests can choose a payment method and save a booking request, but no payment provider is connected and no money is charged.

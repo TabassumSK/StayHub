@@ -16,6 +16,10 @@ const reviewSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  isDemo: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model("Review", reviewSchema);

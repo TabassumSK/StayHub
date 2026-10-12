@@ -87,9 +87,9 @@
         <label for="category" class="form-label">Stay category</label>
         <select id="category" name="listing[category]" class="form-select">
           <option value="">Choose a category (optional)</option>
-          <option value="rooms">Rooms</option>
-          <option value="mountains">Mountains</option>
-          <option value="farms">Farms</option>
+          <% categoryOptions.forEach((option) => { %>
+            <option value="<%= option.value %>"><%= option.label %></option>
+          <% }); %>
         </select>
       </div>
 

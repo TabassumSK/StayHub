@@ -3,6 +3,7 @@
 
 const Listing = require("../models/listing.js");
 const axios = require("axios");
+const categoryOptions = require("../categories");
 
 // ✅ Helper function here
 async function getCoordinates(location) {
@@ -19,11 +20,6 @@ async function getCoordinates(location) {
 //index listings
 module.exports.index = async (req, res) => {
   const q = typeof req.query.q === "string" ? req.query.q.trim().slice(0, 100) : "";
-  const categoryOptions = [
-    { value: "rooms", label: "Rooms", icon: "fa-bed" },
-    { value: "mountains", label: "Mountains", icon: "fa-mountain-sun" },
-    { value: "farms", label: "Farms", icon: "fa-wheat-awn" },
-  ];
   const requestedCategory = typeof req.query.category === "string" ? req.query.category : "";
   const category = categoryOptions.some((option) => option.value === requestedCategory)
     ? requestedCategory
@@ -31,12 +27,26 @@ module.exports.index = async (req, res) => {
   const searchPattern = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const filter = {};
   if (category) {
-    filter.category = category;
+    const selectedCategory = categoryOptions.find((option) => option.value === category);
+    const legacyCategoryMatch = {
+      category: null,
+      $or: selectedCategory.legacyKeywords.flatMap((keyword) =>
+        ["title", "description", "services"].map((field) => ({
+          [field]: { $regex: keyword, $options: "i" },
+        })),
+      ),
+    };
+    filter.$and = [{ $or: [{ category }, legacyCategoryMatch] }];
   }
   if (searchPattern) {
-    filter.$or = ["title", "description", "location", "country", "services"].map((field) => ({
+    const searchFilter = ["title", "description", "location", "country", "services"].map((field) => ({
       [field]: { $regex: searchPattern, $options: "i" },
     }));
+    if (filter.$and) {
+      filter.$and.push({ $or: searchFilter });
+    } else {
+      filter.$or = searchFilter;
+    }
   }
   const allListings = await Listing.find(filter);
   res.render("listings/index", { allListings, q, category, categoryOptions });
@@ -44,7 +54,7 @@ module.exports.index = async (req, res) => {
 
 // new listing
 module.exports.renderNewForm = (req, res) => {
-  res.render("listings/new.ejs");
+  res.render("listings/new.ejs", { categoryOptions });
 };
 
 //show listing
@@ -100,7 +110,7 @@ module.exports.renderEditForm = async (req, res) => {
   }
   let originalImageUrl = listing.image.url;
   originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250");
-  res.render("listings/edit", { listing, originalImageUrl });
+  res.render("listings/edit", { listing, originalImageUrl, categoryOptions });
 };
 
 // update listing

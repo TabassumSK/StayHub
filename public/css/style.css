@@ -86,6 +86,7 @@ body {
 .btn-outline-dark {
   border-color: #718087;
   color: var(--stayhub-ink);
+  background-color: white;
 }
 
 .btn-outline-dark:hover {
@@ -347,6 +348,8 @@ body {
 }
 
 .stayhub-host-link {
+  background: #e8f2ef;
+  color: var(--stayhub-accent);
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
@@ -364,7 +367,7 @@ body {
 }
 
 .stayhub-host-link:hover {
-  background: #e8f2ef;
+  /* background: #e8f2ef; */
   color: var(--stayhub-accent);
 }
 
@@ -539,7 +542,7 @@ body {
 
 .listing-categories {
   display: flex;
-  gap: clamp(1.4rem, 4vw, 3rem);
+  gap: clamp(1.4rem, 3vw, 3rem);
   margin: 0 0 clamp(2rem, 4vw, 3rem);
   overflow-x: auto;
   padding: 0.15rem 0 0.55rem;
@@ -653,10 +656,42 @@ body {
   color: var(--stayhub-accent);
 }
 
-.tax-toggle .form-check-input {
-  float: none;
-  margin: 0 0 0 0.1rem;
-  accent-color: var(--stayhub-accent);
+.tax-toggle-button {
+  position: relative;
+  width: 2.5rem;
+  height: 1.45rem;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 1rem;
+  background: #c7d1ce;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+.tax-toggle-button[aria-pressed="true"] {
+  background: var(--stayhub-accent);
+}
+
+.tax-toggle-button:focus-visible {
+  outline: 3px solid rgb(44 112 98 / 35%);
+  outline-offset: 2px;
+}
+
+.tax-toggle-knob {
+  position: absolute;
+  top: 0.2rem;
+  left: 0.2rem;
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(31 41 51 / 20%);
+  transition: transform 160ms ease;
+}
+
+.tax-toggle-button[aria-pressed="true"] .tax-toggle-knob {
+  transform: translateX(1.05rem);
 }
 
 .property-grid {

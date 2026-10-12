@@ -71,6 +71,50 @@
     overflow-wrap: anywhere;
   }
 
+  .receipt-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .receipt-reference {
+    margin: 0;
+    color: #687681;
+    font-size: 0.85rem;
+    text-align: right;
+  }
+
+  .receipt-lines {
+    margin: 0 0 1.5rem;
+    padding: 0;
+    border-top: 1px solid #d7e1df;
+    list-style: none;
+  }
+
+  .receipt-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid #d7e1df;
+  }
+
+  .receipt-line span {
+    color: #52616b;
+  }
+
+  .receipt-line strong {
+    text-align: right;
+  }
+
+  .receipt-total {
+    font-size: 1.08rem;
+    font-weight: 800;
+  }
+
   .confirmation-actions {
     display: flex;
     flex-wrap: wrap;
@@ -87,6 +131,18 @@
     background: #0d6e6e;
   }
 
+  @media print {
+    .confirmation-card {
+      border: 0;
+      background: #fff;
+      box-shadow: none;
+    }
+
+    .confirmation-actions {
+      display: none;
+    }
+  }
+
   @media (max-width: 540px) {
     .confirmation-details {
       grid-template-columns: 1fr;
@@ -98,17 +154,46 @@
 
 <main class="booking-confirmation">
   <section class="confirmation-card">
-    <div class="confirmation-icon" aria-hidden="true">
-      <i class="fa-solid fa-hourglass-half"></i>
+    <div class="receipt-header">
+      <div>
+        <div class="confirmation-icon" aria-hidden="true">
+          <i class="fa-solid fa-hourglass-half"></i>
+        </div>
+        <p class="booking-eyebrow">Booking request saved</p>
+        <h1>Payment is still pending</h1>
+      </div>
+      <p class="receipt-reference">
+        Receipt preview<br>
+        <strong>SH-<%= booking._id.toString().slice(-8).toUpperCase() %></strong><br>
+        <%= booking.createdAt.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }) %>
+      </p>
     </div>
-    <p class="booking-eyebrow">Booking request saved</p>
-    <h1>Payment is still pending</h1>
     <p class="confirmation-message">
       Your selected payment method and trip details have been saved for <strong><%= booking.listing.title %></strong>.
-      This project is not connected to a payment provider, so no money was charged and your reservation is not confirmed.
+      This demo does not collect payment, so this receipt is not proof of payment or a confirmed reservation.
     </p>
 
+    <% const nights = (booking.checkOut.getTime() - booking.checkIn.getTime()) / 86400000; %>
+    <ul class="receipt-lines" aria-label="Receipt price details">
+      <li class="receipt-line">
+        <span>Accommodation (<%= nights %> <%= nights === 1 ? 'night' : 'nights' %> × ₹ <%= booking.nightlyPrice.toLocaleString("en-IN") %>)</span>
+        <strong>₹ <%= booking.totalPrice.toLocaleString("en-IN") %></strong>
+      </li>
+      <li class="receipt-line receipt-total">
+        <span>Estimated total</span>
+        <strong>₹ <%= booking.totalPrice.toLocaleString("en-IN") %></strong>
+      </li>
+    </ul>
+
     <dl class="confirmation-details">
+      <div class="confirmation-detail">
+        <dt>Listing</dt>
+        <dd><%= booking.listing.title %></dd>
+      </div>
+      <div class="confirmation-detail">
+        <dt>Location</dt>
+        <dd><%= booking.listing.location %><%= booking.listing.country ? `, ${booking.listing.country}` : '' %></dd>
+      </div>
       <div class="confirmation-detail">
         <dt>Check-in</dt>
         <dd><%= booking.checkIn.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }) %></dd>
@@ -129,13 +214,10 @@
         <dt>Booking status</dt>
         <dd>Awaiting payment</dd>
       </div>
-      <div class="confirmation-detail">
-        <dt>Estimated total</dt>
-        <dd>₹ <%= booking.totalPrice.toLocaleString("en-IN") %></dd>
-      </div>
     </dl>
 
     <div class="confirmation-actions">
+      <button type="button" class="btn btn-outline-dark" onclick="window.print()">Print receipt</button>
       <a href="/listings/<%= booking.listing._id %>" class="btn btn-primary">Back to this place</a>
       <a href="/listings" class="btn btn-outline-dark">Explore other stays</a>
     </div>

@@ -22,13 +22,14 @@
   });
 })();
 
-// toggle function working
-let taxSwitch = document.getElementById("flexSwitchCheckDefault");
-if (taxSwitch) {
-  taxSwitch.addEventListener("change", () => {
+const taxToggle = document.getElementById("taxToggle");
+if (taxToggle) {
+  taxToggle.addEventListener("click", () => {
+    const showTax = taxToggle.getAttribute("aria-pressed") !== "true";
+    taxToggle.setAttribute("aria-pressed", String(showTax));
     const taxInfo = document.querySelectorAll(".tax-info");
     taxInfo.forEach((info) => {
-      info.style.display = taxSwitch.checked ? "inline" : "none";
+      info.style.display = showTax ? "inline" : "none";
     });
   });
 }

@@ -2,6 +2,7 @@ const mongoose = require("mongoose"); //--> use to establish connec with mongoDB
 const Review = require("./reviews");
 const users = require("./users");
 const { required } = require("joi");
+const categoryOptions = require("../categories");
 const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
@@ -43,7 +44,7 @@ const listingSchema = new Schema({
   },
   category: {
     type: String,
-    enum: ["mountains", "rooms", "farms"],
+    enum: categoryOptions.map((option) => option.value),
     set: (value) => (value === "" ? undefined : value),
   }
 });

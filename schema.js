@@ -1,5 +1,6 @@
 // to validate schema we use joi
 const Joi = require("joi");
+const categoryOptions = require("./categories");
 
 module.exports.listingSchema = Joi.object({
   listing: Joi.object({
@@ -10,7 +11,7 @@ module.exports.listingSchema = Joi.object({
     location: Joi.string().required(),
     country: Joi.string().required(),
     services: Joi.string().allow("", null),
-    category: Joi.string().valid("mountains", "rooms", "farms").allow("", null),
+    category: Joi.string().valid(...categoryOptions.map((option) => option.value)).allow("", null),
   }).required(),
 });
 
