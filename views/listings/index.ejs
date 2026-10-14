@@ -2,13 +2,13 @@
 
 <main class="listings-page">
   <section class="hero-carousel" aria-label="Find your next stay">
-    <div id="stayHubHero" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4500">
+    <div id="stayHubHero" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="2500">
       <% const heroImages = [
-        '/images/place1.jpg',
-        '/images/place2.jpg',
-        '/images/place3.jpg',
-        '/images/place4.jpg',
-        '/images/place5.jpg'
+        '/images/Tropical Sunset Villa Infinity Pool.png',
+        '/images/Luxury Villa at Sunset by the Pool.png',
+        '/images/Luxury Overwater Villa in Turquoise Lagoon.png',
+        '/images/Tropical Luxury Pool at Sunset.png',
+        '/images/Modern Villa Amidst Verdant Hills.png'
       ]; %>
 
       <div class="carousel-indicators">
@@ -50,7 +50,7 @@
   <nav class="listing-categories" aria-label="Filter stays by category">
     <a
       class="listing-category <%= category ? '' : 'is-active' %>"
-      href="/listings<%= q ? `?q=${encodeURIComponent(q)}` : '' %>#listings"
+      href="/listings#listings"
       <% if (!category) { %>aria-current="page"<% } %>>
       <i class="fa-solid fa-border-all" aria-hidden="true"></i>
       <span>All stays</span>
