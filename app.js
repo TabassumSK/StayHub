@@ -308,6 +308,11 @@ app.use("/", userRouter);
 //     res.send("saved in database");
 // });
 
+
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
+
 // if request matching above routes it will executed but if not find route then it will prints "Page Not Found"
 app.use((req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));
