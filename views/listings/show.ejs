@@ -1094,7 +1094,9 @@
 
 <script>
   const MAP_TOKEN = "<%= MAP_TOKEN %>";
-  const coordinates = <%- JSON.stringify(listing.geometry.coordinates) %>;
+  const coordinates = <%- JSON.stringify(listing.geometry && listing.geometry.coordinates && listing.geometry.coordinates.length ? listing.geometry.coordinates : [77.2090, 28.6139]) %>;
+  const listingTitle = <%- JSON.stringify(listing.title) %>;
+  const listingLocation = <%- JSON.stringify(`${listing.location}, ${listing.country}`) %>;
 </script>
 
 <script src="/js/map.js"></script>

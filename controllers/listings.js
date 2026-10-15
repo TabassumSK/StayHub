@@ -4,17 +4,42 @@
 const Listing = require("../models/listing.js");
 const axios = require("axios");
 const categoryOptions = require("../categories");
+const ExpressError = require("../utils/ExpressError");
 
-// ✅ Helper function here
-async function getCoordinates(location) {
-  const response = await axios.get(
-    `https://api.maptiler.com/geocoding/${location}.json`,
-    {
-      params: { key: process.env.MAP_TOKEN }
+async function getCoordinates(location, country) {
+  const mapToken = process.env.MAP_TOKEN;
+  if (!mapToken) {
+    throw new ExpressError(503, "Location lookup is not configured. Add MAP_TOKEN to the server environment.");
+  }
+
+  let response;
+  try {
+    response = await axios.get(
+      `https://api.maptiler.com/geocoding/${encodeURIComponent(`${location}, ${country}`)}.json`,
+      { params: { key: mapToken } },
+    );
+  } catch (err) {
+    if (!axios.isAxiosError(err)) {
+      throw err;
     }
-  );
+    if ([401, 403].includes(err.response?.status)) {
+      throw new ExpressError(502, "MapTiler rejected MAP_TOKEN. Check that the token is valid and enabled for geocoding.");
+    }
+    if (err.response?.status === 429) {
+      throw new ExpressError(503, "MapTiler's geocoding limit has been reached. Please try again later.");
+    }
+    throw new ExpressError(502, "MapTiler could not look up this location. Check the network connection and try again.");
+  }
 
-  return response.data.features[0].center;
+  const coordinates = response.data.features?.[0]?.center;
+  if (
+    !Array.isArray(coordinates) ||
+    coordinates.length !== 2 ||
+    !coordinates.every(Number.isFinite)
+  ) {
+    throw new ExpressError(400, "MapTiler could not find this city or area. Check the location and country and try again.");
+  }
+  return coordinates;
 }
 
 //index listings
@@ -78,11 +103,16 @@ module.exports.showListing = async (req, res) => {
 
 // create listing
 module.exports.createListing = async (req, res) => {
+  if (!req.file) {
+    throw new ExpressError(400, "Please upload a listing photo.");
+  }
+
   let url = req.file.path;
   let filename = req.file.filename;
 
   // Get coordinates from location
-  const coords = await getCoordinates(req.body.listing.location);
+  const { location, country } = req.body.listing;
+  const coords = await getCoordinates(location, country);
 
   const newListing = new Listing(req.body.listing);
   newListing.owner = req.user._id;
@@ -104,26 +134,31 @@ module.exports.renderEditForm = async (req, res) => {
   let { id } = req.params;
   const listing = await Listing.findById(id);
   if (!listing) {
-    // throw new ExpressError(404, "Listing not found");
     req.flash("error", "Listing you requested for does not exists");
-    res.redirect("/listings");
+    return res.redirect("/listings");
   }
-  let originalImageUrl = listing.image.url;
-  originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250");
+  let originalImageUrl = listing.image?.url || "";
+  if (originalImageUrl) {
+    originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250");
+  }
   res.render("listings/edit", { listing, originalImageUrl, categoryOptions });
 };
 
 // update listing
 module.exports.updateListing = async (req, res) => {
   let { id } = req.params;
-  const listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+  const listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
+  if (!listing) {
+    req.flash("error", "Listing you requested for does not exists");
+    return res.redirect("/listings");
+  }
 
-  if (typeof req.file != "undefined") {
+  if (typeof req.file !== "undefined") {
     let url = req.file.path;
     let filename = req.file.filename;
     listing.image = { url, filename };
+    await listing.save();
   }
-  await listing.save();
 
   req.flash("success", "Listing Updated!");
   res.redirect(`/listings/${id}`);

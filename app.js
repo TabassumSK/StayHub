@@ -82,7 +82,12 @@ app.engine("ejs", ejsMate);
 // );
 
 //mongoDB connection with js
-const MONGO_URL = "mongodb://127.0.0.1:27017/wonderlust";
+const MONGO_URL = process.env.MONGO_URL;
+
+async function main() {
+  await mongoose.connect(MONGO_URL);
+}
+
 main()
   .then(() => {
     console.log("server connected to mongodb");
@@ -91,9 +96,6 @@ main()
     console.log(err);
   });
 
-async function main() {
-  await mongoose.connect(MONGO_URL);
-}
 
 //map token
 app.use((req, res, next) => {
@@ -313,13 +315,15 @@ app.use((req, res, next) => {
 
 //error handling
 app.use((err, req, res, next) => {
-  let { statusCode = 500, message = "Something went Wrong" } = err;
+  console.error("Server Error:", err);
+  let { statusCode = err.http_code || 500, message = "Something went Wrong" } = err;
   res.status(statusCode).render("error.ejs", { message });
   // req.flash("error", message);
   // res.status(statusCode).redirect("back");
 });
 
-//server listening
-app.listen(8080, () => {
-  console.log(`Server is listening to Port 8080`);
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
