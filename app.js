@@ -107,7 +107,7 @@ app.use((req, res, next) => {
 // A cookie is a small piece of data stored in the user’s browser.
 const cookieParser = require("cookie-parser");
 // "secretcode" = key used to protect / sign cookies
-app.use(cookieParser("thisshouldbeabettersecret"));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 //cookies
 app.get("/cook", (req, res) => {
@@ -146,7 +146,7 @@ app.get("/verify", (req, res) => {
 const session = require("express-session");
 
 const sessionOptions = {
-  secret: "thisshouldbeabettersecret", // replace with a strong secret
+  secret: process.env.SESSION_SECRET, // replace with a strong secret
   resave: false, // don’t save session if unmodified
   saveUninitialized: true, // don’t create session until something is stored
   cookie: {
