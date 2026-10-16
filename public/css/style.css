@@ -466,6 +466,12 @@ body {
   height: clamp(340px, 43vw, 540px);
 }
 
+.hero-carousel .carousel-control-prev {
+  width: 3.5rem;
+  justify-content: flex-start;
+  padding-left: 1.5rem;
+}
+
 .hero-image {
   width: 100%;
   height: 100%;
@@ -926,7 +932,7 @@ body {
   }
 
   .hero-caption {
-    padding: 1.5rem;
+    padding: 2rem;
   }
 
   .hero-caption h1 {
@@ -934,7 +940,7 @@ body {
   }
 
   .hero-carousel .carousel-indicators {
-    margin-left: 1.5rem;
+    margin: 0 0 0 2.2rem;
   }
 
   .properties-tools {
@@ -1063,6 +1069,10 @@ body {
   .site-footer-inner {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .hero-carousel .carousel-control-prev {
+    padding-left: 0rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1156,3 +1166,4 @@ body {
     max-width: 6.5rem;
   }
 }
+
