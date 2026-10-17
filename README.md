@@ -82,8 +82,8 @@ It features full **authentication and authorization**, **property management**, 
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/TabassumSK/wonderlust.git
-   cd wonderlust
+   git clone https://github.com/TabassumSK/SrayHub.git
+   cd StayHub
 
    ```
 
